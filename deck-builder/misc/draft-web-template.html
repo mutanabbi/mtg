@@ -1,0 +1,209 @@
+<html>
+<head>
+  <style type="text/css">
+
+    div.deck {
+      display: table;
+    }
+    div.card-cont {
+      margin-top:  50px;
+      margin-left: 5px;
+      margin-right: 5px;
+      position: relative;
+      height: 285px;
+      width: 200px;
+      float: left;
+      display: table-cell;
+      }
+
+    div.card-cont img {
+      position: absolute;
+      width: 200px;
+    }
+    div.card-cont img:nth-child(1) {
+      z-index: 4;
+      bottom: 0%;
+    }
+    div.card-cont img:nth-child(2) {
+      z-index: 3;
+      bottom: 5%;
+    }
+    div.card-cont img:nth-child(3) {
+      z-index: 2;
+      bottom: 10%;
+    }
+    div.card-cont img:nth-child(4) {
+      z-index: 1;
+      bottom: 15%;
+    }
+    
+    table#my-table {
+      width: 100%;
+      cellpadding: 0px;
+      cellspacing: 0px;
+      border: 0px;
+    }
+
+  </style>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
+  <link rel="stylesheet" href="http://www.datatables.net/release-datatables/media/css/demo_table_jui.css" />
+  <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+  <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
+  <script type="text/javascript" language="javascript" src="http://www.datatables.net/release-datatables/media/js/jquery.dataTables.js"></script>
+  <script>
+    $(function() {
+      $( "#tabs" ).tabs();
+    });
+    $(document).ready(function() {
+        oTable = $('#my-table').dataTable({
+            "bJQueryUI": true,
+            "sPaginationType": "full_numbers",
+            "aaSorting": [[ 1, "desc" ]]
+        });
+    } );
+  </script>
+</head>
+
+<body>
+  
+  
+  <div id="tabs">
+    <ul>
+    <li><a href="#tabs-1">Deck Statistics</a></li>
+    <li><a href="#tabs-2">Visual Spoiler</a></li>
+    <li><a href="#tabs-3">Other</a></li>
+    </ul>
+    
+    
+    <div id="tabs-1">
+    <table id="my-table" class="display">
+      <thead>
+          <tr>
+              <th></th>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Mana</th>
+              <th>Set</th>
+              <th>$</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr class="gradeA">
+              <td>4</td>
+              <td>Wayfaring Temple</td>
+              <td>Creature - Elemental</td>
+              <td>1GW</td>
+              <td>RTR</td>
+              <td>0.1</td>
+          </tr>
+          <tr class="gradeC">
+              <td>3</td>
+              <td>Pyroconvergence</td>
+              <td>Enchantment</td>
+              <td>4R</td>
+              <td>RTR</td>
+              <td>0.5</td>
+          </tr>
+          <tr class="gradeA">
+              <td>1</td>
+              <td>Seller of Songbirds</td>
+              <td>Creature - Human</td>
+              <td>2W</td>
+              <td>RTR</td>
+              <td>0.3</td>
+          </tr>
+          <tr class="gradeX">
+              <td>4</td>
+              <td>Cruesome Deformity</td>
+              <td>Enchantment - Aura</td>
+              <td>B</td>
+              <td>ISD</td>
+              <td>0.1</td>
+          </tr>
+          <tr class="gradeX">
+              <td>2</td>
+              <td>Bonds of Faith</td>
+              <td>Enchantment - Aura</td>
+              <td>1W</td>
+              <td>ISD</td>
+              <td>2.1</td>
+          </tr>
+          <tr class="gradeU">
+              <td>3</td>
+              <td>Eretic Punishment</td>
+              <td>Enchantment</td>
+              <td>4R</td>
+              <td>ISD</td>
+              <td>10</td>
+          </tr>
+          <tr class="gradeC">
+              <td>4</td>
+              <td>Zameck Guildmage</td>
+              <td>Creature - Elf Shaman</td>
+              <td>GU</td>
+              <td>GTC</td>
+              <td>11.5</td>
+          </tr>
+      </tbody>
+    </table>
+    </div>
+  
+  
+  <div id="tabs-2">
+  <div class="deck">
+    <div class="card-cont">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/209.jpg">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/209.jpg">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/209.jpg">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/209.jpg">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/209.jpg">
+    </div>
+    <div class="card-cont">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/103.jpg">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/103.jpg">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/103.jpg">
+    </div>
+    <div class="card-cont">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/22.jpg">
+    </div>
+    <div class="card-cont">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/103.jpg">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/103.jpg">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/103.jpg">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/103.jpg">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/103.jpg">
+    </div>
+    <div class="card-cont">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/5.jpg">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/5.jpg">
+    </div>
+    <div class="card-cont">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/147.jpg">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/147.jpg">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/147.jpg">
+    </div>
+    <div class="card-cont">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/gtc/209.jpg">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/gtc/209.jpg">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/gtc/209.jpg">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/gtc/209.jpg">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/gtc/209.jpg">
+    </div>
+  </div>
+  </div>
+  <div id="tabs-3">
+  <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>
+  <p>Duis cursus. Maecenas ligula eros, blandit nec, pharetra at, semper at, magna. Nullam ac lacus. Nulla facilisi. Praesent viverra justo vitae neque. Praesent blandit adipiscing velit. Suspendisse potenti. Donec mattis, pede vel pharetra blandit, magna ligula faucibus eros, id euismod lacus dolor eget odio. Nam scelerisque. Donec non libero sed nulla mattis commodo. Ut sagittis. Donec nisi lectus, feugiat porttitor, tempor ac, tempor vitae, pede. Aenean vehicula velit eu tellus interdum rutrum. Maecenas commodo. Pellentesque nec elit. Fusce in lacus. Vivamus a libero vitae lectus hendrerit hendrerit.</p>
+  </div>
+  </div>
+    <!--
+    <div class="card-cont">
+    <div class="cell"><img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/209.jpg"></div>
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/209.jpg">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/209.jpg">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/209.jpg">
+    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/209.jpg">
+    -->
+    </div>
+<body>
+</html>

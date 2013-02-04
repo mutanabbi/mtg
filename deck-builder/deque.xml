@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<deque>
+  <sets>
+    <set id="rt">Возвращение в Равнику<set/>
+  <sets/>
+
+  <cards>
+    <card id="141" set="rtr" cnt="4" />
+    <card id="142" set="rtr" cnt="1" />
+    <card id="200" set="rtr" />
+  </cards>
+<deque/>
