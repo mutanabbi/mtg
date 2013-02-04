@@ -1,0 +1,150 @@
+div, p, ul, li, ol, form, input, textarea, label, h1, h2, h3, h4, h5 {
+  font: 12px Arial,Tahoma,sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+a img, img {
+  border: medium none;
+}
+
+a, a:visited {
+  color: #750004;
+  text-decoration: underline;
+}
+
+a:hover {
+  color: #CB0008;
+  text-decoration: none;
+}
+
+.crdbx {
+  margin: 5px 6px 5px 0;
+  width: 100px;
+  height: 143px;
+  float: left;
+  border: 2px solid black;
+}
+
+.crdbx-act {
+  margin: 5px 6px 5px 0;
+  width: 100px;
+  height: 143px;
+  float: left;
+  border: 2px solid red;
+}
+
+.select-vgt {
+  margin: 0 0 5px 7px;
+}
+
+.prev-vgt {
+  float: left;
+  margin: 0 0 0 10px;
+  display: inline;
+}
+.next-vgt {
+  float: right;
+  display: inline;
+}
+
+.players-tbl {
+  float: left;
+  width: 240px;
+  margin: 0;
+  height: 80px;
+  font-size: 7pt;
+  color: black;
+}
+
+.grey-dlmtr {
+  clear: right;
+  margin: 2px 10px;
+  border: 1px solid gold;
+  background: #666666;
+  width: 220px;
+  height: 26px;
+  opacity: 0.5;
+}
+
+.player-name {
+  font-size: 7pt;
+  color: black;
+  float: right;
+  text-align: center;
+  width: 60px;
+  margin: 0;
+  height: 25px;
+}
+
+.blank-dlmtr {
+  width: 450px;
+  height: 1px;
+}
+
+#dv_image_draft {
+  display: none;
+  /* width: 720px; */
+  margin: 0px -10px 0px 0px;
+}
+
+div[class^="dv_image_player"], div[class^="dv_image_pack"], div[class^="dv_image_pick"] {
+  display: none;
+}
+ 
+ a#dv_prev_pick_link {
+  display: none;
+ }
+
+.card-storage {
+  float: left;
+  width: 460px;
+  margin: 0 10px 0 0;
+  min-height: 10px;
+}
+
+.preview {
+  float: left;
+  /* width: 240px; */
+  margin: 5px 0 0;
+}
+
+.cntrl-head {
+  /* background: url(http://mymagic.ru/assets/images/site_tools/deck-gold.jpg) repeat ;*/
+  margin: 10px 0;
+}
+
+.line-dlmtr {
+  display: inherit;
+  margin: 0 0 5px;
+  /* width: 710px; */
+  width: 100%;
+  height: 6px;
+}
+
+.cntrl-storage {
+  float: left;
+  /* width: 460px; */
+  margin:0 10px 0 0;
+  height: 80px;
+}
+
+img.card-preview {
+  /*
+  width: 240px;
+  height: 342px;
+  */
+  width: 312px;
+  height: 445px;
+  margin-right: 10px;
+  float: left;
+}
+
+img#dv_card_back {
+  display: none;
+}
+
+a.dv_text_link
+{
+  display: inline;
+}

@@ -1,0 +1,71 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="draft.xsl" version="1.0" ?>
+<game>
+<players>
+  <player id="i">Колесникович Илья</player>
+  <player id="a">Андрей</player>
+  <player id="m">Веселый плюшевый мишка</player>
+</players>
+
+<boosters>
+  <booster id="m13">M13 базовая редакция</booster>
+  <booster id="isd">Иннистрад</booster>
+  <booster id="rtr">Возвращение в Равнику</booster>
+</boosters>
+
+<draft>
+ <deque player="i">
+   <circle booster="m13">
+     <card id="111" />
+     <card id="222" />
+     <card id="47" />
+   </circle>
+   <circle booster="isd">
+     <card id="131" />
+     <card id="232" />
+     <card id="48" />
+   </circle>
+   <circle booster="rtr">
+     <card id="101" />
+     <card id="212" />
+     <card id="46" />
+   </circle>
+ </deque>
+
+ <deque player="a">
+   <circle booster="m13">
+     <card id="113" />
+     <card id="223" />
+     <card id="49" />
+   </circle>
+   <circle booster="isd">
+     <card id="110" />
+     <card id="221" />
+     <card id="45" />
+   </circle>
+   <circle booster="rtr">
+     <card id="114" />
+     <card id="225" />
+     <card id="50" />
+   </circle>
+ </deque>
+
+ <deque player="m">
+   <circle booster="m13">
+     <card id="11" />
+     <card id="22" />
+     <card id="7" />
+   </circle>
+   <circle booster="isd">
+     <card id="12" />
+     <card id="23" />
+     <card id="8" />
+   </circle>
+   <circle booster="rtr">
+     <card id="10" />
+     <card id="21" />
+     <card id="6" />
+   </circle>
+ </deque>
+</draft>
+</game>

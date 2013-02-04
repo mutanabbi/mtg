@@ -1,0 +1,293 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="draft.xsl" version="1.0" ?>
+
+<game>
+<!-- Важно: Игроки должны быть объявлены в порядке их расположения за столом по часовой стрелке -->
+<players>
+  <player id="t">Трафальдино</player>
+  <player id="p">Дядюшка Поттер</player>
+  <player id="d">Дюдя</player>
+  <player id="m">Микки Маус</player>
+</players>
+
+<!-- Важно: Бустеры должны быть объявлены в том же порядке, в котором они драфтились в игре -->
+<boosters>
+  <booster id="rtr">Возвращение в Равнику</booster>
+  <booster id="m13">M13 базовая редакция</booster>
+  <booster id="isd">Иннистрад</booster>
+</boosters>
+
+<!-- Сокращения названий бустеров, используемые на magiccards.info. Поскольку информацию мы тянем оттуда, то используемое сокращение критично
+  Return to Ravnica 
+    gtc: Gate's Crash (Незванные гости)
+    rtr: Return to Ravnica (Возвращение в Равнику)
+  Innistrad
+    avr: Возвращение Авацины
+    dka: Возвышение мрака
+    isd: Innistrad (Иннистрад)
+  Scars of Mirrodin
+    nph: New Phrexia (Новая Фрексия)
+    mbs: Осада Мироддина
+    som: Scars of Mirrodin (Шрамы Мирродина)
+  Zendicar
+    roe: Возрождение Эльдрази
+    wwk: Возрождение мира
+    zen: Zendicar (Зендикар)
+  Shards of Alara
+    arb: Alara reborn
+    cfx: Conflux
+    ala: Shards of Alara (Осколки Алары)
+  Shadowmoor
+    eve: Сумерки
+    shm: Shadowmoor (Шэдоумур)
+  Lorwyn
+    mt: Рассвет
+    lw: Лорвин
+  Time Spiral
+    fut: Взгляд в будущее
+    pc: Вселенский хаос
+    ts: Спираль времени
+    tsts: Спираль времени репринты
+  Ice Age
+    cs: Стужа
+  Ravnica
+    di: Раскол
+    gp: Договор гильдий
+    rav: Равника: город гильдий
+  Core Set Editions
+    m13: Базовый выпуск 2013
+    m12: Базовый выпуск 2012
+    m11: Базовый выпуск 2011
+    m10: Базовый выпуск 2010
+    10e: Десятая редакция
+    9e: Девятая редакция
+  Kamigawa
+    sok: Saviours of Kamigawa
+    bok: Betrayers of Kamigawa
+    chk: Champions of Kamigawa
+  Mirrodin
+    5dn: Fifth down
+    ds: Darksteel
+    mi: Mirrodin
+-->
+
+<!-- Важно: Порядок перечисления карт (тег <card>) внутри <circle> должен совпадать с порядком, в котором игрок их выбирал на соответствующем пике -->
+<draft>
+  <deque player="t">
+   <circle booster="rtr">
+      <!-- Для проверки. Бустер на пике 1: 23, 114, 90, 26, 154, 116, 223, 193, 156, 233, 165, 129, 25, 202 -->
+      <card id="202" />
+      <card id="22" />
+      <card id="190" />
+      <card id="233" />
+      <card id="129" />
+      <card id="240" />
+      <card id="233" />
+      <card id="133" />
+      <card id="233" />
+      <card id="233" />
+      <card id="16" />
+      <card id="22" />
+      <card id="193" />
+      <card id="23" />
+    </circle>
+    <circle booster="m13">
+      <!-- Пик 1: 94, 164, 83, 148, 41, 130, 13, 98, 164, 107, 149, 219, 202, 164-->
+      <card id="164" />
+      <card id="3" />
+      <card id="4" />
+      <card id="46" />
+      <card id="94" />
+      <card id="7" />
+      <card id="57" />
+      <card id="53" />
+      <card id="149" />
+      <card id="134" />
+      <card id="143" />
+      <card id="7" />
+      <card id="13" />
+      <card id="102" />
+    </circle>
+    <circle booster="isd">
+      <!-- Пик 1: 20, 58, 160, 30, 33, 193, 188, 50, 185, 37, 126, 7, 148, 122 -->
+      <card id="122" />
+      <card id="153" />
+      <card id="156" />
+      <card id="60" />
+      <card id="7" />
+      <card id="31" />
+      <card id="65" />
+      <card id="96" />
+      <card id="37" />
+      <card id="40" />
+      <card id="80" />
+      <card id="197" />
+      <card id="50" />
+      <card id="151" />
+    </circle>
+  </deque>
+
+  <deque player="p">
+    <circle booster="rtr">
+      <!-- Бустер на пике 1: 193, 196, 76, 154, 119, 126, 22, 80, 9, 11, 133, 122, 190, 233 -->
+      <card id="190" />
+      <card id="25" />
+      <card id="190" />
+      <card id="124" />
+      <card id="11" />
+      <card id="165" />
+      <card id="93" />
+      <card id="151" />
+      <card id="122" />
+      <card id="156" />
+      <card id="105" />
+      <card id="91" />
+      <card id="126" />
+      <card id="114" />
+    </circle>
+    <circle booster="m13">
+      <!-- 99, 39, 3, 108, 17, 7, 93, 102, 78, 134, 96, 7, 91, 111 -->
+      <card id="111" />
+      <card id="172" />
+      <card id="66" />
+      <card id="202" />
+      <card id="91" />
+      <card id="19" />
+      <card id="161" />
+      <card id="219" />
+      <card id="96" />
+      <card id="76" />
+      <card id="205" />
+      <card id="107" />
+      <card id="78" />
+      <card id="163" />
+    </circle>
+    <circle booster="isd">
+      <!-- 183, 102, 224, 122, 39, 72, 185, 93, 197, 204, 96, 199, 60, 167 -->
+      <card id="167" />
+      <card id="148" />
+      <card id="28" />
+      <card id="128" />
+      <card id="199" />
+      <card id="126" />
+      <card id="54" />
+      <card id="11" />
+      <card id="204" />
+      <card id="185" />
+      <card id="176" />
+      <card id="154" />
+      <card id="93" />
+      <card id="58" />
+    </circle>
+  </deque>
+
+  <deque player="m">
+    <circle booster="rtr">
+      <!-- Бустер на пике 1: 237, 209, 200, 4, 23, 105, 233, 93, 109, 11, 240, 26, 190, 22 -->
+      <card id="26" />
+      <card id="144" />
+      <card id="9" />
+      <card id="154" />
+      <card id="109" />
+      <card id="42" />
+      <card id="154" />
+      <card id="23" />
+      <card id="237" />
+      <card id="169" />
+      <card id="196" />
+      <card id="90" />
+      <card id="4" />
+      <card id="26" />
+    </circle>
+    <circle booster="m13">
+      <!-- Пик 1: 144, 7, 66, 31, 146, 137, 7, 30, 205, 53, 161, 46, 66, 163 -->
+      <card id="66" />
+      <card id="130" />
+      <card id="7" />
+      <card id="114" />
+      <card id="146" />
+      <card id="41" />
+      <card id="108" />
+      <card id="16" />
+      <card id="7" />
+      <card id="164" />
+      <card id="93" />
+      <card id="19" />
+      <card id="144" />
+      <card id="83" />
+    </circle>
+    <circle booster="isd">
+      <!-- 224, 217, 133, 137, 173, 146, 151, 73, 176, 40, 54, 31, 28, 153 -->
+      <card id="73" />
+      <card id="150" />
+      <card id="224" />
+      <card id="193" />
+      <card id="133" />
+      <card id="162" />
+      <card id="39" />
+      <card id="33" />
+      <card id="173" />
+      <card id="113" />
+      <card id="72" />
+      <card id="188" />
+      <card id="217" />
+      <card id="137" />
+    </circle>
+  </deque>
+
+  <deque player="d">
+    <circle booster="rtr">
+      <!-- Бустер на пике 1: 169, 241, 165, 42, 144, 26, 22, 91, 16, 151, 133, 233, 124, 190-->
+      <card id="133" />
+      <card id="80" />
+      <card id="116" />
+      <card id="11" />
+      <card id="165" />
+      <card id="76" />
+      <card id="26" />
+      <card id="209" />
+      <card id="22" />
+      <card id="193" />
+      <card id="223" />
+      <card id="200" />
+      <card id="241" />
+      <card id="119" />
+    </circle>
+    <circle booster="m13">
+      <!-- Пик 1: 189, 19, 92, 163, 143, 156, 16, 98, 76, 114, 57, 19, 4, 172 -->
+      <card id="189" />
+      <card id="137" />
+      <card id="164" />
+      <card id="39" />
+      <card id="156" />
+      <card id="30" />
+      <card id="98" />
+      <card id="99" />
+      <card id="98" />
+      <card id="163" />
+      <card id="148" />
+      <card id="17" />
+      <card id="98" />
+      <card id="31" />
+    </circle>
+    <circle booster="isd">
+      <!-- 180, 213, 162, 153, 116, 113, 137, 154, 150, 80, 11, 65, 128, 156 -->
+      <card id="180" />
+      <card id="185" />
+      <card id="20" />
+      <card id="224" />
+      <card id="116" />
+      <card id="183" />
+      <card id="160" />
+      <card id="146" />
+      <card id="153" />
+      <card id="102" />
+      <card id="30" />
+      <card id="137" />
+      <card id="213" />
+      <card id="122" />
+    </circle>
+  </deque>
+</draft>
+
+</game>
