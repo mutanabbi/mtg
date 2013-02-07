@@ -279,8 +279,7 @@
   
   var turnsCnt = 4;
   var total = 0;
-  for (var i = 0; i < arr.length; ++i)
-    total += arr[i];
+  arr.forEach(function(val) { total += val; });
   
   var res = {};
   for (var group = 0; group < sArr.length; ++group) {
@@ -293,33 +292,29 @@
     }
   }
 
-  result = "";
+  var result = document.createDocumentFragment();
   var raws = document.evaluate("//table[@id='my-table']/tbody/tr", document, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null );
   for (var iter = raws.iterateNext(); iter; iter = raws.iterateNext()) {
-    result += "<tr>\n";
-    try {
-      var group = parseInt(document.evaluate("td[position() = 1]", iter, null, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null ).iterateNext().textContent);
-      var tds = document.evaluate("td[position() < 3]", iter, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null );
-      for (var iter = tds.iterateNext(); iter; iter = tds.iterateNext())
-      {
-        result += "<td>\n";
-        try {
-          result += iter.innerHTML;
-        }
-        finally {
-          result += "\n</td>\n";
-        }
-      }
-      
-      for (var turn = 0; turn < turnsCnt; ++turn)
-        result += "<td>" + res[group][turn] + "</td>";
+    var tr = document.createElement("tr");
+    var group = parseInt(
+      document.evaluate("td[position() = 1]", iter, null, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null ).iterateNext().textContent
+    );
+    var tds = document.evaluate("td[position() < 3]", iter, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+    for (var iter = tds.iterateNext(); iter; iter = tds.iterateNext()) {
+      var td = document.createElement("td");
+      td.innerHTML = iter.innerHTML;
+      tr.appendChild(td);
     }
-    finally {
-      result += "\n</tr>\n";
+    for (var turn = 0; turn < turnsCnt; ++turn) {
+      var text = document.createTextNode(res[group][turn]);
+      var td = document.createElement("td");
+      td.appendChild(text);
+      tr.appendChild(td);
     }
+    result.appendChild(tr);
   }
   
   var resIt = document.evaluate("//table[@id='possibility-table']/tbody", document, null, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null );
-  resIt.iterateNext().innerHTML = result;
+  resIt.iterateNext().appendChild(result);
 
 </script>
