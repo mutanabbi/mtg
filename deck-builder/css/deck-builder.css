@@ -1,0 +1,165 @@
+.mana_0, .mana_1, .mana_2, .mana_2b, .mana_2g, .mana_2r, .mana_2u, .mana_2w, .mana_3, .mana_4, .mana_5, .mana_6, .mana_7, .mana_8, .mana_9, .mana_10, .mana_11, .mana_12, .mana_13, .mana_14, .mana_15, .mana_16, .mana_b, .mana_bg, .mana_br, .mana_g, .mana_gu, .mana_gw, .mana_r, .mana_rg, .mana_rw, .mana_s, .mana_snow, .mana_tap, .mana_u, .mana_ub, .mana_untap, .mana_ur, .mana_w, .mana_wb, .mana_wu, .mana_x, .mana {
+    background: url("../images/mana-lent.gif") no-repeat scroll 0 0 transparent;
+    display: block;
+    float: left;
+    height: 15px;
+    margin-right: 4px;
+    overflow: hidden;
+    text-indent: -99999px;
+    width: 15px;
+}
+
+.mana_0 {
+    background-position: 0 0;
+}
+.mana_1 {
+    background-position: 0 -16px;
+}
+.mana_2 {
+    background-position: 0 -32px;
+}
+.mana_2b {
+    background-position: 0 -48px;
+}
+.mana_2g {
+    background-position: 0 -64px;
+}
+.mana_2r {
+    background-position: 0 -80px;
+}
+.mana_2u {
+    background-position: 0 -96px;
+}
+.mana_2w {
+    background-position: 0 -112px;
+}
+.mana_3 {
+    background-position: 0 -128px;
+}
+.mana_4 {
+    background-position: 0 -144px;
+}
+.mana_5 {
+    background-position: 0 -160px;
+}
+.mana_6 {
+    background-position: 0 -176px;
+}
+.mana_7 {
+    background-position: 0 -192px;
+}
+.mana_8 {
+    background-position: 0 -208px;
+}
+.mana_9 {
+    background-position: 0 -224px;
+}
+.mana_10 {
+    background-position: 0 -240px;
+}
+.mana_11 {
+    background-position: 0 -256px;
+}
+.mana_12 {
+    background-position: 0 -272px;
+}
+.mana_13 {
+    background-position: 0 -288px;
+}
+.mana_14 {
+    background-position: 0 -304px;
+}
+.mana_15 {
+    background-position: 0 -320px;
+}
+.mana_16 {
+    background-position: 0 -336px;
+}
+.mana_b {
+    background-position: 0 -352px;
+}
+.mana_bg {
+    background-position: 0 -368px;
+}
+.mana_br {
+    background-position: 0 -384px;
+}
+.mana_g {
+    background-position: 0 -400px;
+}
+.mana_gu {
+    background-position: 0 -416px;
+}
+.mana_gw {
+    background-position: 0 -432px;
+}
+.mana_r {
+    background-position: 0 -448px;
+}
+.mana_rg {
+    background-position: 0 -464px;
+}
+.mana_rw {
+    background-position: 0 -480px;
+}
+.mana_s {
+    background-position: 0 -496px;
+}
+.mana_snow {
+    background-position: 0 -512px;
+}
+.mana_tap {
+    background-position: 0 -528px;
+}
+.mana_u {
+    background-position: 0 -544px;
+}
+.mana_ub {
+    background-position: 0 -560px;
+}
+.mana_untap {
+    background-position: 0 -576px;
+}
+.mana_ur {
+    background-position: 0 -592px;
+}
+.mana_w {
+    background-position: 0 -608px;
+}
+.mana_wb {
+    background-position: 0 -624px;
+}
+.mana_wu {
+    background-position: 0 -640px;
+}
+.mana_x {
+    background-position: 0 -656px;
+}
+.mana_bp, .mana_gp, .mana_p, .mana_rp, .mana_up, .mana_wp {
+    background: url("../images/phrexia-mana.png") no-repeat scroll 0 0 transparent;
+    display: block;
+    float: left;
+    height: 15px;
+    margin-right: 4px;
+    overflow: hidden;
+    text-indent: -99999px;
+    width: 15px;
+}
+.mana_bp {
+    background-position: 0 0;
+}
+.mana_gp {
+    background-position: 0 -16px;
+}
+.mana_p {
+    background-position: 0 -32px;
+}
+.mana_rp {
+    background-position: 0 -48px;
+}
+.mana_up {
+    background-position: 0 -64px;
+}
+.mana_wp {
+    background-position: 0 -80px;
+}
