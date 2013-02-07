@@ -45,8 +45,10 @@
     }
 
   </style>
+  <script src="../js/hyper-geo.js"></script>
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
   <link rel="stylesheet" href="http://www.datatables.net/release-datatables/media/css/demo_table_jui.css" />
+  <link rel="stylesheet" href="../css/deck-builder.css" />
   <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
   <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
   <script type="text/javascript" language="javascript" src="http://www.datatables.net/release-datatables/media/js/jquery.dataTables.js"></script>
@@ -54,6 +56,7 @@
     $(function() {
       $( "#tabs" ).tabs();
     });
+
     $(document).ready(function() {
         oTable = $('#my-table').dataTable({
             "bJQueryUI": true,
@@ -61,7 +64,15 @@
             "aaSorting": [[ 1, "desc" ]]
         });
     } );
-  </script>
+
+    $(document).ready(function() {
+        oTable = $('#possibility-table').dataTable({
+            "bJQueryUI": true,
+            "sPaginationType": "full_numbers",
+            "aaSorting": [[ 1, "desc" ]]
+        });
+    } ); 
+    </script>
 </head>
 
 <body>
@@ -71,10 +82,11 @@
     <ul>
     <li><a href="#tabs-1">Deck Statistics</a></li>
     <li><a href="#tabs-2">Visual Spoiler</a></li>
-    <li><a href="#tabs-3">Other</a></li>
+    <li><a href="#tabs-3">Possibilities</a></li>
+    <li><a href="#tabs-4">Starting Hand</a></li>
     </ul>
     
-    
+
     <div id="tabs-1">
     <table id="my-table" class="display">
       <thead>
@@ -92,7 +104,11 @@
               <td>4</td>
               <td>Wayfaring Temple</td>
               <td>Creature - Elemental</td>
-              <td>1GW</td>
+              <td>
+              <i class="mana_1" title="1"></i>
+              <i class="mana_g" title="G"></i>              
+              <i class="mana_w" title="W"></i>              
+              </td>
               <td>RTR</td>
               <td>0.1</td>
           </tr>
@@ -100,7 +116,10 @@
               <td>3</td>
               <td>Pyroconvergence</td>
               <td>Enchantment</td>
-              <td>4R</td>
+              <td>
+              <i class="mana_4" title="4"></i>
+              <i class="mana_r" title="R"></i>              
+              </td>
               <td>RTR</td>
               <td>0.5</td>
           </tr>
@@ -108,7 +127,10 @@
               <td>1</td>
               <td>Seller of Songbirds</td>
               <td>Creature - Human</td>
-              <td>2W</td>
+              <td>
+              <i class="mana_2" title="2"></i>
+              <i class="mana_w" title="w"></i>              
+              </td>
               <td>RTR</td>
               <td>0.3</td>
           </tr>
@@ -116,7 +138,9 @@
               <td>4</td>
               <td>Cruesome Deformity</td>
               <td>Enchantment - Aura</td>
-              <td>B</td>
+              <td>
+              <i class="mana_b" title="B"></i>
+              </td>
               <td>ISD</td>
               <td>0.1</td>
           </tr>
@@ -124,7 +148,10 @@
               <td>2</td>
               <td>Bonds of Faith</td>
               <td>Enchantment - Aura</td>
-              <td>1W</td>
+              <td>
+              <i class="mana_1" title="1"></i>
+              <i class="mana_w" title="w"></i>  
+              </td>
               <td>ISD</td>
               <td>2.1</td>
           </tr>
@@ -132,7 +159,10 @@
               <td>3</td>
               <td>Eretic Punishment</td>
               <td>Enchantment</td>
-              <td>4R</td>
+              <td>
+              <i class="mana_4" title="4"></i>
+              <i class="mana_r" title="R"></i>
+              </td>
               <td>ISD</td>
               <td>10</td>
           </tr>
@@ -140,70 +170,156 @@
               <td>4</td>
               <td>Zameck Guildmage</td>
               <td>Creature - Elf Shaman</td>
-              <td>GU</td>
+              <td>
+              <i class="mana_g" title="G"></i>
+              <i class="mana_u" title="U"></i>
+              </td>
               <td>GTC</td>
               <td>11.5</td>
           </tr>
       </tbody>
     </table>
-    </div>
+    </div> <!-- div id=tabs-1 -->
   
   
-  <div id="tabs-2">
-  <div class="deck">
-    <div class="card-cont">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/209.jpg">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/209.jpg">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/209.jpg">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/209.jpg">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/209.jpg">
-    </div>
-    <div class="card-cont">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/103.jpg">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/103.jpg">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/103.jpg">
-    </div>
-    <div class="card-cont">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/22.jpg">
-    </div>
-    <div class="card-cont">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/103.jpg">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/103.jpg">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/103.jpg">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/103.jpg">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/103.jpg">
-    </div>
-    <div class="card-cont">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/5.jpg">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/5.jpg">
-    </div>
-    <div class="card-cont">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/147.jpg">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/147.jpg">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/147.jpg">
-    </div>
-    <div class="card-cont">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/gtc/209.jpg">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/gtc/209.jpg">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/gtc/209.jpg">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/gtc/209.jpg">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/gtc/209.jpg">
-    </div>
-  </div>
-  </div>
-  <div id="tabs-3">
-  <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>
-  <p>Duis cursus. Maecenas ligula eros, blandit nec, pharetra at, semper at, magna. Nullam ac lacus. Nulla facilisi. Praesent viverra justo vitae neque. Praesent blandit adipiscing velit. Suspendisse potenti. Donec mattis, pede vel pharetra blandit, magna ligula faucibus eros, id euismod lacus dolor eget odio. Nam scelerisque. Donec non libero sed nulla mattis commodo. Ut sagittis. Donec nisi lectus, feugiat porttitor, tempor ac, tempor vitae, pede. Aenean vehicula velit eu tellus interdum rutrum. Maecenas commodo. Pellentesque nec elit. Fusce in lacus. Vivamus a libero vitae lectus hendrerit hendrerit.</p>
-  </div>
-  </div>
-    <!--
-    <div class="card-cont">
-    <div class="cell"><img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/209.jpg"></div>
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/209.jpg">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/209.jpg">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/209.jpg">
-    <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/209.jpg">
-    -->
-    </div>
+    <div id="tabs-2">
+      <div class="deck">
+        <div class="card-cont">
+          <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/209.jpg">
+          <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/209.jpg">
+          <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/209.jpg">
+          <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/209.jpg">
+          <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/209.jpg">
+        </div>
+        <div class="card-cont">
+          <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/103.jpg">
+          <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/103.jpg">
+          <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/103.jpg">
+        </div>
+        <div class="card-cont">
+          <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/rtr/22.jpg">
+        </div>
+        <div class="card-cont">
+          <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/103.jpg">
+          <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/103.jpg">
+          <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/103.jpg">
+          <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/103.jpg">
+          <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/103.jpg">
+        </div>
+        <div class="card-cont">
+          <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/5.jpg">
+          <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/5.jpg">
+        </div>
+        <div class="card-cont">
+          <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/147.jpg">
+          <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/147.jpg">
+          <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/isd/147.jpg">
+        </div>
+        <div class="card-cont">
+          <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/gtc/209.jpg">
+          <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/gtc/209.jpg">
+          <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/gtc/209.jpg">
+          <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/gtc/209.jpg">
+          <img id="dv_card" class="card-preview" alt="" src="http://magiccards.info/scans/en/gtc/209.jpg">
+        </div>
+      </div>
+    </div> <!-- div id=tabs-2 -->
+    
+  
+    <div id="tabs-3">
+      <span>
+        These are the probabilities that you will have drawn the given card at least once by a certain turn!
+      </span>
+
+      <table id="possibility-table" class="display">
+        <thead>
+          <tr>
+              <th></th>
+              <th>Name</th>
+              <th>Hand</th>
+              <th>Turn 1</th>
+              <th>Turn 2</th>
+              <th>Turn 3</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div> <!-- div id=tabs-3 -->
+
+    
+    <div id="tabs-4">
+      <div style="text-align: center;">
+        <input type="button" onclick="generate_hand()" value="New Hand" />
+        <input type="button" onclick="add_random_card()" value="Add Another Card" />
+        <input type="button" onclick="mulligan()" value="Mulligan" />
+      </div>
+    </div> <!-- div id=tabs-4 -->  
+  
+  
+  </div> <!-- div id=tabs -->
+
+
 <body>
 </html>
+<script>
+  var cnts = document.evaluate("//table[@id='my-table']/tbody/tr/td[position() = 1]", document, null, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null );
+  
+  Array.prototype.getUnique = function(){
+    return this.filter(function(item, ind, arr){
+      return ind == 0 ? true : item !== arr[ind - 1];
+    });
+  };
+
+  var arr = [];
+  for (iter = cnts.iterateNext(); iter; iter = cnts.iterateNext())
+    arr.push(parseInt(iter.textContent));
+    
+  var sArr = arr.sort().getUnique();
+  
+  var turnsCnt = 4;
+  var total = 0;
+  for (var i = 0; i < arr.length; ++i)
+    total += arr[i];
+  
+  var res = {};
+  for (var group = 0; group < sArr.length; ++group) {
+    var gr = sArr[group];
+    res[gr] = [];
+    for (var turn = 0; turn < turnsCnt; ++turn) {
+      var smallPopulation = 7 + turn;
+      //alert("hyp(" +0 + ", " + smallPopulation + ", " + gr +", " + total +")")
+      res[gr].push(Math.round((1 - hyp(0, smallPopulation, gr, total)) * 100000) / 100000);
+    }
+  }
+
+  result = "";
+  var raws = document.evaluate("//table[@id='my-table']/tbody/tr", document, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null );
+  for (var iter = raws.iterateNext(); iter; iter = raws.iterateNext()) {
+    result += "<tr>\n";
+    try {
+      var group = parseInt(document.evaluate("td[position() = 1]", iter, null, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null ).iterateNext().textContent);
+      var tds = document.evaluate("td[position() < 3]", iter, null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null );
+      for (var iter = tds.iterateNext(); iter; iter = tds.iterateNext())
+      {
+        result += "<td>\n";
+        try {
+          result += iter.innerHTML;
+        }
+        finally {
+          result += "\n</td>\n";
+        }
+      }
+      
+      for (var turn = 0; turn < turnsCnt; ++turn)
+        result += "<td>" + res[group][turn] + "</td>";
+    }
+    finally {
+      result += "\n</tr>\n";
+    }
+  }
+  
+  var resIt = document.evaluate("//table[@id='possibility-table']/tbody", document, null, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null );
+  resIt.iterateNext().innerHTML = result;
+
+</script>
