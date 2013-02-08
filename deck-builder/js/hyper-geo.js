@@ -4,7 +4,7 @@ Subpopulation size m
 Sample size n
 x value
 */
-function hyp(x,n,m,nn) {
+function hyp(x, n, m, nn) {
   var nz = m < n ? m : n;
   var mz = m < n ? n : m
   var h = 1, s = 1, k = 0, i = 0;
