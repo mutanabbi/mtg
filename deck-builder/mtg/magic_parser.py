@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 # todo: All other values (Phyrexia and so on)
 class MagicParser(object):
     def __init__(self, stream):
-        _cs = BeautifulSoup(stream)
+        self._cs = BeautifulSoup(stream)
     
     def _decodeColors(self, str):
         result = set()

@@ -1,11 +1,14 @@
-from bs4 import BeautifulSoup;
-import urllib.request;
-import sys;
-import re
-import codecs;
+# -*- coding: utf-8 -*-
 
-HEADER = "<deque>\n";
-FOOTER = "\n</deque>";
+from mtg.magiccards_info_parser import *
+from bs4 import BeautifulSoup
+import urllib.request
+import sys
+import re
+import codecs
+
+HEADER = "<deque>\n"
+FOOTER = "\n</deque>"
 ENTRY = '''
 <card id="{0}" set="{1}" cnt="{2}">
   <name>{3}</name>
@@ -18,9 +21,11 @@ ENTRY = '''
 {13}  </desc>
   <legality>
 {14}  </legality>
-  <goth>{15}</goth>
+  <art>{15}</art>
+  <quote>{16}</quote>
+  <goth>{17}</goth>
 </card>
-''';
+'''
 
     #TODO
 #      """
@@ -30,24 +35,12 @@ ENTRY = '''
 #   <hi>{5}</hi>
 #  </price>
 #"""
-
-def decode_colors(str):
-  result = set();
-  for ch in str:
-    {
-      'G' : lambda: result.add("green"),
-      'B' : lambda: result.add("black"),
-      'W' : lambda: result.add("white"),
-      'U' : lambda: result.add("blue"),
-      'R' : lambda: result.add("red"),
-    }.get(ch, lambda: None)()
-  return result; #[f for f in result if f != None];
   
 def get_keywords(str):
-  None;
+  None
 
 def decode_type(str):
-  None;
+  None
   # Instant
   # Sorcery
   # Planeswalker - Name (Loyalty: [0-9]+)
@@ -57,110 +50,88 @@ def decode_type(str):
   # [Legendary ][Artifact ]Land[ -( Gate)|( Swamp|Mountain|Plains|Island|Forest)+]   Desert, Lair, Locus, Mine, Power-Plant, Tower, Urza's
   # Basic [Snow ]Land Swamp|Mountain|Plains|Island|Forest
 
+      
   
-  
+
 
 utf8stdout = open(1, 'w', encoding='utf-8', closefd=False) # fd 1 is stdout
-card_list = open("deque.xml", "r");
-output = open("deque-processed.xml", "w", encoding='utf-8');
+card_list = open("deck.xml", "r")
+output = open("deck-processed.xml", "w", encoding='utf-8')
 
 try:
-  content = card_list.read();
-  soup = BeautifulSoup(content);
-  result = [];
+  content = card_list.read()
+  soup = BeautifulSoup(content)
+  result = []
   for card in soup.findAll("card"):
     try:
-      cnt = 1 if not card.has_key("cnt") else int(card["cnt"]);
-      addr = "http://magiccards.info/{0}/en/{1}.html".format(card["set"], card["id"]);
-      f = urllib.request.urlopen(addr);
-      html = f.read();
-      cs = BeautifulSoup(html);
+      cnt = 1 if not card.has_key("cnt") else int(card["cnt"])
+      addr = "http://magiccards.info/{0}/en/{1}.html".format(card["set"], card["id"])
+      f = urllib.request.urlopen(addr)
+      html = f.read()
+      parser = MagiccardsInfoParser(html)
       
-      root = cs.html.body.findAll("table")[3].tr;
-      name = root('td')[1].span.a.string;
-      [ctype, cost] = root("td")[1].p.string.split(",");
-      ctype = ctype.strip();
-      cost = cost.strip();
-  
-      desc = [];
-      for line in root("td")[1]("p")[1].b.strings:
-        desc.append(line);
-  
-      quote = root("td")[1]("p")[2].i.string;
-      goth = root("td")[1]("p")[4].a["href"];
-      
-      legal = [];
-      for l in root("td")[1].findAll("li", {"class" : "legal"}):
-        legal.append(l.string);
-      art = root("td")[2].small("b")[1].string;
-      rare = root("td")[2].small("b")[3].string;
-      rare = rare[rare.rfind('(') + 1 : rare.rfind(')')];
-      
-      # Debug only
-      # print("Name: " + str(name), file=utf8stdout);
-      # print("Type - Cost(TotalCost): " + str(type) + " " + str(cost), file=utf8stdout)
-      # print("Desc: " + str(desc), file=utf8stdout);
-      # print("Legal: " + str(legal), file=utf8stdout);
-      # print("Quote: " + str(quote), file=utf8stdout);
-      # print("Art: " + str(art), file=utf8stdout);
-      # print("Rare: " + str(rare) , file=utf8stdout);
-      # print("Goth: " + str(goth) , file=utf8stdout);
-      colors = "";
-      for i in decode_colors(cost):
-        colors += "   <color>{0}</color>\n".format(i);
-  
-      subtype_str = "";
-      supertype_str="";
-      # if (subtype): subtype_str = "<subtype>{0}</subtype>".format(subtype);
-  
-      creature_stats = "";
-      "<pwr></pwr>"
-      "<life></life>"
-#      """
-#  <keywords>
-#    <keyword></keyword>
-#  </keywords>"""
+      # # Debug only
+      # # print("Name: " + str(name), file=utf8stdout)
+      # # print("Type - Cost(TotalCost): " + str(type) + " " + str(cost), file=utf8stdout)
+      # # print("Desc: " + str(desc), file=utf8stdout)
+      # # print("Legal: " + str(legal), file=utf8stdout)
+      # # print("Quote: " + str(quote), file=utf8stdout)
+      # # print("Art: " + str(art), file=utf8stdout)
+      # # print("Rare: " + str(rare) , file=utf8stdout)
+      # # print("Goth: " + str(goth) , file=utf8stdout)
 
-      desc_str = "";
-      for i in desc: desc_str += "    <line>{0}</line>\n".format(i);
-      legal_str = "";
-      for i in legal: legal_str += "    <legal>{0}</legal>\n".format(i.split("Legal in ")[1]);
-      
+  
+      # subtype_str = ""
+      # supertype_str=""
+      # # if (subtype): subtype_str = "<subtype>{0}</subtype>".format(subtype)
+      # 
+      # creature_stats = ""
+      # "<pwr></pwr>"
+      # "<life></life>"
+      #      """
+      #  <keywords>
+      #    <keyword></keyword>
+      #  </keywords>"""
+
+
+      subtype_str = ""
+      creature_stats_str = ""
       output_str = ENTRY.format(
-        card["id"]
+         card["id"]
        , card["set"]
        , cnt
-       , name
-       , 0
-       , 0
-       , 0
-       , colors
-       , rare
-       , ctype
+       , parser.getName()
+       , parser.getLoPrice()
+       , parser.getMiPrice()
+       , parser.getHiPrice()
+       , "".join(map(lambda x: "    <color>{}</color>\n".format(x) , parser.getColors()))
+       , parser.getRare()
+       , parser.getTypeStr()
        , subtype_str
-       , cost
-       , creature_stats
-       , desc_str
-       , legal_str
-       , goth
-       );
-
-      print(output_str , file=utf8stdout);
-      result.append(output_str);
+       , parser.getMana()
+       , creature_stats_str
+       , "".join(map(lambda x: "    <line>{}</line>\n".format(x), parser.getDesc()))
+       , "".join(map(lambda x: "    <legal>{}</legal>\n".format(x), parser.getLegal()))
+       , parser.getArt()
+       , parser.getQuote()
+       , parser.getGoth()
+      )
+      print(output_str , file=utf8stdout)
+      result.append(output_str)
       
     except KeyError:
-      print(2, "Invalid <card> item detected");
+      print(2, "Invalid <card> item detected")
       #except HTTPError as ex:
       #  if (ex.code == 404):
-      #    print ("Invalid card identifier: " + card["set"] + "#" + card["id"]);
+      #    print ("Invalid card identifier: " + card["set"] + "#" + card["id"])
       #  else:
-      #    print ("Server is down: " + ex.code);
+      #    print ("Server is down: " + ex.code)
 
 finally:
-  output.write(HEADER);
+  output.write(HEADER)
   for i in result:
-    output.write(i);
-  output.write(FOOTER);
-  output.close();
-  card_list.close();
-  utf8stdout.close();
+    output.write(i)
+  output.write(FOOTER)
+  output.close()
+  card_list.close()
+  utf8stdout.close()

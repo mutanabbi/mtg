@@ -1,107 +1,116 @@
 # -*- coding: utf-8 -*-
 """Parser for http://magiccards.info"""
-from mtg.magic_parser import MagicParser;
+from mtg import magic_parser
 
-class MagiccardsInfoParser(MagicParser):
+class MagiccardsInfoParser(magic_parser.MagicParser):
     def __init__(self, stream):
         super().__init__(stream)
-        _root = _cs.html.body.findAll("table")[3].tr
+        self._root = self._cs.html.body.findAll("table")[3].tr
 
     def _parseName(self):
-        _name = _root('td')[1].span.a.string
+        self._name = self._root('td')[1].span.a.string
     
-    def _parseCTypeMana():
-        [ctype, mana] = root("td")[1].p.string.split(",")
-        _ctype = ctype.strip()
-        _mana = mana.strip()
+    def _parseTypeMana(self):
+        [type, mana] = self._root("td")[1].p.string.split(",")
+        self._type_str = type.strip()
+        self._mana = mana.strip()
         
     def _parseDesc(self):
         desc = []
-        for line in _root("td")[1]("p")[1].b.strings:
+        for line in self._root("td")[1]("p")[1].b.strings:
             desc.append(line)
-        _desc = desc
+        self._desc = desc
         
     def _parseQuote(self):
-        _quote = _root("td")[1]("p")[2].i.string
+        self._quote = self._root("td")[1]("p")[2].i.string
         
     def _parseGoth(self):
-        _goth = _root("td")[1]("p")[4].a["href"]    
+        self._goth = self._root("td")[1]("p")[4].a["href"]    
 
     def _parseLegal(self):
         legal = []
-        for l in root("td")[1].findAll("li", {"class" : "legal"}):
+        for l in self._root("td")[1].findAll("li", {"class" : "legal"}):
             legal.append(l.string)
-        _legal = legal
+        self._legal = legal
      
     def _parseArt(self):
-        _art = root("td")[2].small("b")[1].string
+        self._art = self._root("td")[2].small("b")[1].string
  
     def _parseRare(self):
-        rare = root("td")[2].small("b")[3].string
+        rare = self._root("td")[2].small("b")[3].string
         rare = rare[rare.rfind('(') + 1 : rare.rfind(')')]
-        _rare = rare
+        self._rare = rare
 
     def parse(self):
-        _parseName()
-        _parseCTypeMana()
-        _parseDesc()
-        _parseQuote()
-        _parseGoth()
-        _parseLegal()
-        _parseArt()
-        _parseRare()
+        self._parseName()
+        self._parseTypeMana()
+        self._parseDesc()
+        self._parseQuote()
+        self._parseGoth()
+        self._parseLegal()
+        self._parseArt()
+        self._parseRare()
     
     def getName(self):
-        if _name is None:
-            _parseName()
-        return _name
+        if not hasattr(self, "_name"):
+            self._parseName()
+        return self._name
 
-    def getCType(self):
-        if _ctype is None:
-            _parseCTypeMana()
-        return _ctype
+    def getTypeStr(self):
+        if not hasattr(self, "_type_str"):
+            self._parseTypeMana()
+        return self._type_str
     
     def getMana(self):
-        if _mana is None:
-            _parseCTypeMana()
-        return _mana()
+        if not hasattr(self, "_mana"):
+            self._parseTypeMana()
+        return self._mana
     
     def getDesc(self):
-        if _desc is None:
-            _parseDesc()
-        return desc
+        if not hasattr(self, "_desc"):
+            self._parseDesc()
+        return self._desc
 
     def getLegal(self):
-        if _legal is None:
-            _parseLegal()
-        return _legal
-        
+        if not hasattr(self, "_legal"):
+            self._parseLegal()
+        return self._legal
+    
+    # todo: May be None
     def getQuote(self):
-        if _quote is None:
-            _parseQuote()
-        return _quote
+        if not hasattr(self, "_quote"):
+            self._parseQuote()
+        return self._quote
         
     def getArt(self):
-        if _art is None:
-            _parseArt()
-        return _art;
+        if not hasattr(self, "_art"):
+            self._parseArt()
+        return self._art;
         
     def getRare(self):
-        if _rare is None:
-            _parseRare()
-        return _rare
+        if not hasattr(self, "_rare"):
+            self._parseRare()
+        return self._rare
         
     def getGoth(self):
-        if _goth is None:
-            _parseGoth()
-        return _goth
+        if not hasattr(self, "_goth"):
+            self._parseGoth()
+        return self._goth
     
+    def getColors(self):
+        return self._decodeColors(self.getMana())
+    
+    # todo
+    def getSet(self): pass
+    def getId(self): pass
     def getKeywords(self): pass
-    def getHiPrice(self): pass
-    def getLoPrice(self): pass
-    def getMiPrice(self): pass
+    def getHiPrice(self): return 0
+    def getLoPrice(self): return 0
+    def getMiPrice(self): return 0
     def getSubtypes(self): pass
     def getSupertypes(self): pass
-    def getType(self): pass
+    def getTypeStr(self): pass
+    def getPower(self): pass
+    def getToughness(self) : pass
     
   
