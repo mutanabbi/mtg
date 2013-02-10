@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from mtg.magiccards_info_parser import *
+from mtg.card_parser import TypeLineParser
 from bs4 import BeautifulSoup
 import urllib.request
 import sys
@@ -92,8 +93,13 @@ try:
       #  <keywords>
       #    <keyword></keyword>
       #  </keywords>"""
-
-
+       
+      # Just DEBUG
+      tp = TypeLineParser(parser.getTypeStr())
+      print("Subtype: " + str(tp.getSubtype()))
+      print("CardType: " + tp.getCardType())
+      print("WORDS: " + str(tp.getContent()), file=utf8stdout)
+      
       subtype_str = ""
       creature_stats_str = ""
       output_str = ENTRY.format(
