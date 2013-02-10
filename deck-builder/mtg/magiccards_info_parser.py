@@ -11,7 +11,7 @@ class MagiccardsInfoParser(magic_parser.MagicParser):
         self._name = self._root('td')[1].span.a.string
     
     def _parseTypeMana(self):
-        [type, mana] = self._root("td")[1].p.string.split(",")
+        type, mana = self._root("td")[1].p.string.split(",")
         self._type_str = type.strip()
         self._mana = mana.strip()
         
@@ -101,16 +101,16 @@ class MagiccardsInfoParser(magic_parser.MagicParser):
         return self._decodeColors(self.getMana())
     
     # todo
-    def getSet(self): pass
-    def getId(self): pass
-    def getKeywords(self): pass
+    #def getSet(self): pass
+    #def getId(self): pass
+    #def getKeywords(self): pass
+    #def getSubtypes(self): pass
+    #def getSupertypes(self): pass
+    #def getPower(self): pass
+    #def getToughness(self) : pass
+
     def getHiPrice(self): return 0
     def getLoPrice(self): return 0
     def getMiPrice(self): return 0
-    def getSubtypes(self): pass
-    def getSupertypes(self): pass
-    def getTypeStr(self): pass
-    def getPower(self): pass
-    def getToughness(self) : pass
     
   
