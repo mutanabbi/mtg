@@ -53,8 +53,8 @@ class TypeLineParser(object):
     
     def __init__(self, str):
         s = str.strip().lower()
-        re.sub("[—‒―]", "", s)
-        re.sub("[ \t\n]+", " ", s)
+        s = re.sub("[—‒―]+", "", s)
+        s = re.sub("[ \t\n]+", " ", s)
         self._words = s.split(" ")
 
     def _parse(self, msg, cont, allow_few = False, should_exist = False):

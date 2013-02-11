@@ -55,7 +55,7 @@ def decode_type(str):
   
 
 
-utf8stdout = open(1, 'w', encoding='utf-8', closefd=False) # fd 1 is stdout
+utf8stdout = open(1, 'w', encoding='utf8', closefd=False) # fd 1 is stdout
 card_list = open("deck.xml", "r")
 output = open("deck-processed.xml", "w", encoding='utf-8')
 
@@ -70,7 +70,6 @@ try:
       f = urllib.request.urlopen(addr)
       html = f.read()
       parser = MagiccardsInfoParser(html)
-      
       # # Debug only
       # # print("Name: " + str(name), file=utf8stdout)
       # # print("Type - Cost(TotalCost): " + str(type) + " " + str(cost), file=utf8stdout)
@@ -96,8 +95,8 @@ try:
        
       # Just DEBUG
       tp = TypeLineParser(parser.getTypeStr())
-      print("Subtype: " + str(tp.getSubtype()))
-      print("CardType: " + tp.getCardType())
+      print("Subtype: " + str(tp.getSubtype()), file=utf8stdout)
+      print("CardType: " + tp.getCardType(), file=utf8stdout)
       print("WORDS: " + str(tp.getContent()), file=utf8stdout)
       
       subtype_str = ""
