@@ -1,19 +1,29 @@
 # -*- coding: utf-8 -*-
 """Parser for http://magiccards.info"""
 from mtg import magic_parser
+from mtg.card_parser import TypeLineParser
+import re
 
 class MagiccardsInfoParser(magic_parser.MagicParser):
     def __init__(self, stream):
         super().__init__(stream)
         self._root = self._cs.html.body.findAll("table")[3].tr
-
+        
     def _parseName(self):
         self._name = self._root('td')[1].span.a.string
     
     def _parseTypeMana(self):
         type, mana = self._root("td")[1].p.string.split(",")
-        self._type_str = type.strip()
+        type = type.strip()
+        self._tp = TypeLineParser(type)
+        self._power, self._tough = None, None
+        if self._tp.getCardType() == "creature":
+            type, stat = type.rsplit(" ", 1)
+            self._tp = TypeLineParser(type)
+            self._power, self._tough = stat.split("/") 
         self._mana = mana.strip()
+        # todo: it's not necessary any more
+        self._type_str = type.strip()
         
     def _parseDesc(self):
         desc = []
@@ -33,12 +43,23 @@ class MagiccardsInfoParser(magic_parser.MagicParser):
             legal.append(l.string)
         self._legal = legal
      
-    def _parseArt(self):
-        self._art = self._root("td")[2].small("b")[1].string
+    def _parseArtId(self):
+        art_id = self._root("td")[2].small("b")[1].string
+        m = re.search(r"#(\d+)\s+\((.*)\)", art_id)
+        assert("We should match exactly 2 groups" and m and len(m.span()) == 2)
+        id, art = m.groups()
+        self._art = art
+        self._id = id
  
-    def _parseRare(self):
-        rare = self._root("td")[2].small("b")[3].string
-        rare = rare[rare.rfind('(') + 1 : rare.rfind(')')]
+    def _parseSetRare(self):
+        rareSet = self._root("td")[2].small("b")[3].string
+        rpos = rareSet.rfind('(')
+        assert("This field should contain set and rarity information 'set (rarity)' format"
+            and rpos and rpos > 1
+        )
+        set = rareSet[:rpos - 1]
+        rare = rareSet[rpos + 1 : rareSet.rfind(')')]
+        self._set = set
         self._rare = rare
 
     def parse(self):
@@ -48,8 +69,8 @@ class MagiccardsInfoParser(magic_parser.MagicParser):
         self._parseQuote()
         self._parseGoth()
         self._parseLegal()
-        self._parseArt()
-        self._parseRare()
+        self._parseArtId()
+        self._parseSetRare()
     
     def getName(self):
         if not hasattr(self, "_name"):
@@ -60,7 +81,32 @@ class MagiccardsInfoParser(magic_parser.MagicParser):
         if not hasattr(self, "_type_str"):
             self._parseTypeMana()
         return self._type_str
+
+    def getCardType(self):
+        if not hasattr(self, "_tp"):
+            self._parseTypeMana()
+        return self._tp.getCardType()
     
+    def getPower(self):
+        if not hasattr(self, "_power"):
+            self._parseTypeMana()
+        return self._power
+
+    def getToughness(self):
+        if not hasattr(self, "_tough"):
+            self._parseTypeMana()
+        return self._tough
+
+    def getSubtypes(self):
+        if not hasattr(self, "_tp"):
+            self._parseTypeMana()
+        return self._tp.getSubtype()
+        
+    def getSupertypes(self):
+        if not hasattr(self, "_tp"):
+            self._parseTypeMana()
+        return self._tp.getSupertype()
+
     def getMana(self):
         if not hasattr(self, "_mana"):
             self._parseTypeMana()
@@ -84,13 +130,23 @@ class MagiccardsInfoParser(magic_parser.MagicParser):
         
     def getArt(self):
         if not hasattr(self, "_art"):
-            self._parseArt()
+            self._parseArtId()
         return self._art;
-        
+    
+    def getId(self):
+        if not hasattr(self, "_id"):
+            self._parseArtId()
+        return self._id;
+    
     def getRare(self):
         if not hasattr(self, "_rare"):
-            self._parseRare()
+            self._parseSetRare()
         return self._rare
+
+    def getSet(self):
+        if not hasattr(self, "_set"):
+            self._parseSetRare()
+        return self._set
         
     def getGoth(self):
         if not hasattr(self, "_goth"):
@@ -101,13 +157,8 @@ class MagiccardsInfoParser(magic_parser.MagicParser):
         return self._decodeColors(self.getMana())
     
     # todo
-    #def getSet(self): pass
-    #def getId(self): pass
     #def getKeywords(self): pass
-    #def getSubtypes(self): pass
-    #def getSupertypes(self): pass
-    #def getPower(self): pass
-    #def getToughness(self) : pass
+
 
     def getHiPrice(self): return 0
     def getLoPrice(self): return 0

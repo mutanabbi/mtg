@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from mtg.magiccards_info_parser import *
-from mtg.card_parser import TypeLineParser
 from bs4 import BeautifulSoup
 import urllib.request
 import sys
@@ -94,11 +93,18 @@ try:
       #  </keywords>"""
        
       # Just DEBUG
-      tp = TypeLineParser(parser.getTypeStr())
-      print("Subtype: " + str(tp.getSubtype()), file=utf8stdout)
-      print("CardType: " + tp.getCardType(), file=utf8stdout)
-      print("WORDS: " + str(tp.getContent()), file=utf8stdout)
-      
+      print("CardType: " + parser.getCardType(), file=utf8stdout)
+      print("Power: " + str(parser.getPower()), file=utf8stdout)
+      print("Toughnes: " + str(parser.getToughness()), file=utf8stdout)
+      print("Subtype: " + str(parser.getSubtypes()), file=utf8stdout)
+      assert(parser.getCardType() == "creature" and parser.getToughness() and parser.getPower() or not (parser.getToughness() or parser.getPower()))
+      print("Supertypes: " + str(parser.getSupertypes()), file=utf8stdout)
+      #print("WORDS: " + str(tp.getContent()), file=utf8stdout)
+      print("Art: " + str(parser.getArt()), file=utf8stdout)
+      print("ID: " + str(parser.getId()), file=utf8stdout)
+      print("Set: " + parser.getSet(), file=utf8stdout)
+      print("Rarity: " + parser.getRare(), file=utf8stdout)
+
       subtype_str = ""
       creature_stats_str = ""
       output_str = ENTRY.format(
