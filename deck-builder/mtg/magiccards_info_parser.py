@@ -18,7 +18,7 @@ class MagiccardsInfoParser(magic_parser.MagicParser):
         type = type.strip()
         self._tp = TypeLineParser(type)
         self._power, self._tough = None, None
-        if self._tp.getCardType() == "creature":
+        if "creature" in self._tp.getCardType():
             type, stat = type.rsplit(" ", 1)
             self._tp = TypeLineParser(type)
             self._power, self._tough = stat.split("/") 

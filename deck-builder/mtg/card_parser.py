@@ -13,7 +13,7 @@ class TypeLineParser(object):
         "planeswalker", "scheme", "sorcery", "tribal", "vanguard"
     ])
     
-    _art = frozenset(["contraption", "equipment", "fortification"])
+    _art_types = frozenset(["contraption", "equipment", "fortification"])
     
     _ench_types = frozenset(["aura", "curse", "shrine"])
     
@@ -71,41 +71,41 @@ class TypeLineParser(object):
         return types if allow_few else None if len(types) == 0 else types[0]
     
     def _parseType(self):
-        self._ctype = self._parse("card type", self._types, should_exist = True)
+        self._ctype = self._parse("card type", self._types, True, True)
         return self._ctype
         
     def _parseArtType(self):
-        type = self.getCardType()
-        if not type == "artifact":
+        types = self.getCardType()
+        if not "artifact" in types:
             raise RuntimeError("Wrong card type: " + self.getCardType())
         self._art = self._parse("artifact subtype", self._art_types)
         return self._art
         
     def _parseSpellType(self):
-        type = self.getCardType()
-        if not (type == "sorcery" or type == "instant"):
-            raise RuntimeError("Wrong card type: " + type)
+        types = self.getCardType()
+        if not ("sorcery" in types or "instant" in types):
+            raise RuntimeError("Wrong card types: " + str(types))
         self._spell = self._parse("spell (instant or sorery) subtype", self._spell_types)
         return self._spell
     
     def _parseEnchType(self):
-        type = self.getCardType()
-        if not (type == "enchantment"):
-            raise RuntimeError("Wrong card type: " + type)
-        self._ench = self._parse("enchantment subtype", self._ench_types)
+        types = self.getCardType()
+        if not ("enchantment" in types):
+            raise RuntimeError("Wrong card types: " + str(types))
+        self._ench = self._parse("enchantment subtype", self._ench_types, allow_few = True)
         return self._ench
     
     def _parsePWType(self):
-        type = self.getCardType()
-        if not (type == "planeswalker"):
-            raise RuntimeError("Wrong card type: " + type)
-        self._pw = self._parse("planeswalker subtype", self._pw_types)
+        types = self.getCardType()
+        if not ("planeswalker" in types):
+            raise RuntimeError("Wrong card types: " + str(types))
+        self._pw = self._parse("planeswalker subtype", self._pw_types, should_exist = True)
         return self._pw
         
     def _parseCreatureType(self):
-        type = self.getCardType()
-        if not (type == "creature"):
-            raise RuntimeError("Wrong card type: " + type)
+        types = self.getCardType()
+        if not ("creature" in types):
+            raise RuntimeError("Wrong card types: " + str(types))
         self._creat = self._parse("creature subtype", self._creat_types, allow_few = True)
         return self._creat
         
@@ -136,15 +136,20 @@ class TypeLineParser(object):
         return self._super if hasattr(self, "_super") else self._parseSuperType()
         
     def getSubtype(self):
-        return {
-            "artifact" : lambda: self.getArtType(),
-            "creature" : lambda: self.getCreatureType(),
-            "enchantment" : lambda: self.getEnchantmentType(),
-            "instant": lambda: self.getSpellType(),
-            "sorcery": lambda: self.getSpellType(),
-            "planeswalker": lambda: self.getPlaneswalkerType()
-        }.get(self.getCardType(), lambda: [])()
-        
+        result = []
+        for i in self.getCardType():
+            result.extend({
+                "creature" : lambda: self.getCreatureType(),
+                "enchantment" : lambda: self.getEnchantmentType(),
+            }.get(i, lambda: [])())
+            result.append({
+                "artifact" : lambda: self.getArtifactType(),
+                "instant": lambda: self.getSpellType(),
+                "sorcery": lambda: self.getSpellType(),
+                "planeswalker": lambda: self.getPlaneswalkerType()
+            }.get(i, lambda: None)())
+        return list(filter(lambda x: not x == None, result))
+
     def isDone(self):
         return len(_words) == 0
     
