@@ -3,6 +3,7 @@
 from mtg import magic_parser
 from mtg.card_parser import TypeLineParser
 import re
+import urllib.request
 
 class MagiccardsInfoParser(magic_parser.MagicParser):
     def __init__(self, stream):
@@ -44,7 +45,8 @@ class MagiccardsInfoParser(magic_parser.MagicParser):
         self._legal = legal
      
     def _parseArtId(self):
-        art_id = self._root("td")[2].small("b")[1].string
+        utf8stdout = open(1, 'w', encoding='utf8', closefd=False) # fd 1 is stdout
+        art_id = self._root("td")[2].findAll("b", text=re.compile(r"#\d+\s+\(.*\)"))[0].string
         m = re.search(r"#(\d+)\s+\((.*)\)", art_id)
         assert("We should match exactly 2 groups" and m and len(m.span()) == 2)
         id, art = m.groups()
@@ -159,9 +161,36 @@ class MagiccardsInfoParser(magic_parser.MagicParser):
     # todo
     #def getKeywords(self): pass
 
+    # get data from TCGPlayer.com
+    # todo: I think it should be separate class data-provider
+    def _receivePrice(self):
+        f = urllib.request.urlopen(self.getPriceSrc())
+        html = f.read()
+        m = re.search(r".(\$[0-9.]+).*(\$[0-9.]+).*(\$[0-9.]+)", str(html))
+        assert(len(m.groups()) == 3)
+        self._lo_price, self._mi_price, self._hi_price = m.groups()
+ 
+    def _parsePriceSrc(self):
+        self._price_src = self._root.td.script["src"]
+        
+    def getPriceSrc(self):
+        if not hasattr(self, "_price_src"):
+            self._parsePriceSrc()
+        return self._price_src
+        
+    def getHiPrice(self):
+        if not hasattr(self, "_hi_price"):
+            self._receivePrice()
+        return self._hi_price
+        
+    def getLoPrice(self):
+        if not hasattr(self, "_lo_price"):
+            self._receivePrice()
+        return self._mi_price
 
-    def getHiPrice(self): return 0
-    def getLoPrice(self): return 0
-    def getMiPrice(self): return 0
+    def getMiPrice(self):
+        if not hasattr(self, "_mi_price"):
+            self._receivePrice()
+        return self._mi_price
     
   

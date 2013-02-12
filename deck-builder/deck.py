@@ -104,7 +104,11 @@ try:
       print("ID: " + str(parser.getId()), file=utf8stdout)
       print("Set: " + parser.getSet(), file=utf8stdout)
       print("Rarity: " + parser.getRare(), file=utf8stdout)
-
+      print("PriceSrc: " + parser.getPriceSrc(), file=utf8stdout)
+      print("Lo Price: " + parser.getLoPrice(), file=utf8stdout)
+      print("Mi Price: " + parser.getMiPrice(), file=utf8stdout)
+      print("Hi Price: " + parser.getHiPrice(), file=utf8stdout)
+      
       subtype_str = ""
       creature_stats_str = ""
       output_str = ENTRY.format(
