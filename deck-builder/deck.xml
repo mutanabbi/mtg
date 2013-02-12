@@ -8,8 +8,11 @@
     <card id="129" set="rtr" cnt="4" />
     <!-- There are problems with ptc cards. Different page structure (Promo cards) -->
     <card id="64" set="gtc" cnt="2" />
+    <card id="199" set="rtr" cnt="4" />
     <card id="141" set="rtr" cnt="4" />
     <card id="142" set="rtr" cnt="1" />
     <card id="200" set="rtr" />
-  </cards>
+    <card id="94" set="isd" />
+    <card id="260" set="shm" ctn="2"/>
+</cards>
 <deque/>
