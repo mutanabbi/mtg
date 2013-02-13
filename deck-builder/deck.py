@@ -54,10 +54,10 @@ try:
       html = f.read()
       parser = MagiccardsInfoParser(html)
       
-      # addr = parser.getGoth()
-      # f = urllib.request.urlopen(addr)
-      # html = f.read()
-      # parser = GathererWizardsComParser(html)
+      addr = parser.getGoth()
+      f = urllib.request.urlopen(addr)
+      html = f.read()
+      parser = GathererWizardsComParser(html)
       
       # subtype_str = ""
       # supertype_str=""
@@ -88,9 +88,9 @@ try:
       print("Set: " + parser.getSet(), file=utf8stdout)
       
       # Specific methods
-      # print("CMC: " + parser.getCMC(), file=utf8stdout)
-      # print("Watermark: " + str(parser.getWatermark()), file=utf8stdout)
-      print("Legal: " + str(parser.getLegal()), file=utf8stdout)
+      print("CMC: " + parser.getCMC(), file=utf8stdout)
+      print("Watermark: " + str(parser.getWatermark()), file=utf8stdout)
+      # print("Legal: " + str(parser.getLegal()), file=utf8stdout)
 
       print("Colors: " + str(parser.getColors()), file=utf8stdout)
       print("Desc: " + str(parser.getDesc()), file=utf8stdout)
@@ -124,9 +124,9 @@ try:
        , card["set"]
        , cnt
        , parser.getName()
-       , parser.getLoPrice()
-       , parser.getMiPrice()
-       , parser.getHiPrice()
+       , 0 # parser.getLoPrice()
+       , 0 # parser.getMiPrice()
+       , 0 # parser.getHiPrice()
        , "".join(["    <color>{}</color>\n".format(x) for x in parser.getColors()])
        , parser.getRare()
        , parser.getTypeStr()
@@ -134,10 +134,10 @@ try:
        , parser.getMana()
        , creature_stats_str
        , "".join("    <line>{}</line>\n".format(x) for x in parser.getDesc())
-       , "".join("    <legal>{}</legal>\n".format(x) for x in parser.getLegal())
+       , "" #.join("    <legal>{}</legal>\n".format(x) for x in parser.getLegal())
        , parser.getArt()
        , "".join("    <line>{}</line>\n".format(x) for x in parser.getQuote())
-       , parser.getGoth()
+       , "" #parser.getGoth()
       )
       print(output_str, file=utf8stdout)
       result.append(output_str)

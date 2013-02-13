@@ -24,7 +24,22 @@ class GathererWizardsComParser(magic_parser.MagicParser):
     def _findValueOf(self, str):
         return self._findNodeOf(str).text.strip()
 
-# Parsers
+# Clsss-specific implementation
+    def _parsePT(self):
+        self._power, self._tough = None, None
+        if 'creature' in self.getCardType():
+            p, t = self._findValueOf('P/T:').split('/')
+            self._power, self._tough = p.strip(), t.strip()
+
+    def _parseCMC(self):
+        self._cmc = self._findValueOf('Converted Mana Cost:')
+
+    def _parseWatermark(self):
+        result = None
+        lbl = self._findLabel('Watermark:')
+        self._watermark = self._findValueByLabel(lbl) if lbl else None
+
+# Implementation of virtual interface
     def _parseName(self):
         self._name = self._findValueOf('Card Name:')
 
@@ -33,7 +48,9 @@ class GathererWizardsComParser(magic_parser.MagicParser):
         self._tp = TypeLineParser(self._type_str)
 
     def _parseMana(self):
-        self._mana = [ x['alt'].strip().lower() for x in self._findNodeOf('Mana Cost:')('img') ]
+        l = [ x['alt'].strip().lower() for x in self._findNodeOf('Mana Cost:')('img') ]
+        self._mana = ', '.join(l)
+        self._colors = list(set(x for x in l if x in ['green', 'white', 'blue', 'red', 'black']))
     
     def _parseDesc(self):
         result = []
@@ -62,11 +79,6 @@ class GathererWizardsComParser(magic_parser.MagicParser):
             ]
         self._quote = result
 
-    def _parsePT(self):
-        p, t = self._findValueOf('P/T:').split('/')
-        self._power = p.strip()
-        self._tough = t.strip()
-
     def _parseId(self):
         self._id = self._findValueOf('Card #:')
 
@@ -79,14 +91,23 @@ class GathererWizardsComParser(magic_parser.MagicParser):
     def _parseSet(self):
         self._set = self._findNodeOf('Expansion:').div.a.img["alt"].rsplit('(')[0].strip()
 
-# Clsss-specific parsers
-    def _parseCMC(self):
-        self._cmc = self._findValueOf('Converted Mana Cost:')
+# Implementation of virtual interface by calls' redirect to _parsePT()
+    def _parsePower(self):
+        self._parsePT()
+    def _parseToughness(self):
+        self._parsePT()
 
-    def _parseWatermark(self):
-        result = None
-        lbl = self._findLabel('Watermark:')
-        self._watermark = self._findValueByLabel(lbl) if lbl else None
+# Implementation of virtual interface by calls' redirect to _parseTypeStr()
+    def _parseCardType(self):
+        self._parseTypeStr()
+    def _parseSubtypes(self):
+        self._parseTypeStr()
+    def _parseSupertypes(self):
+        self._parseTypeStr()
+
+# Implementation of virtual interface by calls' redirect to _parseMana()
+    def _parseColors(self):
+        self._parseMana()
 
 # not implemented yet
     def _parseLegal(self):
@@ -94,98 +115,6 @@ class GathererWizardsComParser(magic_parser.MagicParser):
 
 # public:
 # Getters (getters cache requested values)
-    def getName(self):
-        ''' Return: string '''
-        if not hasattr(self, "_name"):
-            self._parseName()
-        return self._name
-
-    def getTypeStr(self):
-        ''' Return: string '''
-        if not hasattr(self, "_type_str"):
-            self._parseTypeStr()
-        return self._type_str
-
-    def getCardType(self):
-        ''' Return: non-empty list<string> '''
-        if not hasattr(self, "_tp"):
-            self._parseTypeStr()
-        return self._tp.getCardType()[:] # list by value
-
-    def getPower(self):
-        ''' Return: string or None''' # todo: I hope it isn't number :)
-        if "creature" in self.getCardType():
-            if not hasattr(self, "_power"):
-                self._parsePT()
-            return self._power
-
-    def getToughness(self):
-        ''' Return: string or None''' # todo: I hope it isn't number :)
-        if "creature" in self.getCardType():
-            if not hasattr(self, "_tough"):
-                self._parsePT()
-            return self._tough
-
-    def getSubtypes(self):
-        """ Retrun: list<string> or [] """
-        if not hasattr(self, "_tp"):
-            self._parseTypeStr()
-        return self._tp.getSubtype()[:] # by value
-
-    def getSupertypes(self):
-        """ Retrun: list<string> or [] """
-        if not hasattr(self, "_tp"):
-            self._parseTypeStr()
-        return self._tp.getSupertype()[:] # by value
-
-    # todo: What about cards without mana cost? Lands
-    def getMana(self):
-        ''' Return string '''
-        if not hasattr(self, "_mana"):
-            self._parseMana()
-        return ', '.join(self._mana)
-
-    def getDesc(self):
-        """ Retrun: list<string> or [] """
-        if not hasattr(self, "_desc"):
-            self._parseDesc()
-        return self._desc[:] # by value
-
-    def getQuote(self):
-        """ Return: list<string> or [] """
-        if not hasattr(self, "_quote"):
-            self._parseQuote()
-        return self._quote[:] # by value
-
-    def getArt(self):
-        ''' Return: string '''
-        if not hasattr(self, "_art"):
-            self._parseArt()
-        return self._art;
-
-    def getId(self):
-        ''' Return: string ''' # not number I hope :)
-        if not hasattr(self, "_id"):
-            self._parseId()
-        return self._id;
-
-    def getRare(self):
-        ''' Return: string '''
-        if not hasattr(self, "_rare"):
-            self._parseRare()
-        return self._rare
-
-    def getSet(self):
-        ''' Return: string '''
-        if not hasattr(self, "_set"):
-            self._parseSet()
-        return self._set
-
-    def getColors(self):
-        """ Return: list<string> or [] """
-        if not hasattr(self, '_mana'):
-            self._parseMana()
-        return list(set(x for x in self._mana if x in ['green', 'white', 'blue', 'red', 'black']))
 
 # Class-specific getters
     def getWatermark(self):
@@ -199,7 +128,6 @@ class GathererWizardsComParser(magic_parser.MagicParser):
         if not hasattr(self, '_cmc'):
             self._parseCMC()
         return self._cmc
-
 
 # not implemented yet
     def getKeywords(self):

@@ -10,9 +10,7 @@ class MagiccardsInfoParser(magic_parser.MagicParser):
         super().__init__(stream)
         self._root = self._cs.html.body.findAll("table")[3].tr
 
-    def _parseName(self):
-        self._name = self._root('td')[1].span.a.text
-
+# Class-specific implementation
     def _parseTypeMana(self):
         type, mana = self._root("td")[1].p.text.split(",")
         type = type.strip()
@@ -25,14 +23,6 @@ class MagiccardsInfoParser(magic_parser.MagicParser):
         self._mana = mana.strip()
         # todo: it's not necessary any more
         self._type_str = type.strip()
-
-    def _parseDesc(self):
-        self._desc = [x for x in self._root("td")[1]("p")[1].b.strings]
-
-    def _parseQuote(self):
-        # todo: Check is it possible to have a few lines here
-        result = self._root("td")[1]("p")[2].i.text
-        self._quote = [result] if result else []
 
     def _parseGoth(self):
         self._goth = self._root("td")[1]("p")[4].a["href"]
@@ -60,103 +50,56 @@ class MagiccardsInfoParser(magic_parser.MagicParser):
         self._set = set
         self._rare = rare
 
-    def getName(self):
-        ''' Return: string '''
-        if not hasattr(self, "_name"):
-            self._parseName()
-        return self._name
+# Implementation of virtual interface
+    def _parseName(self):
+        self._name = self._root('td')[1].span.a.text
 
-    def getTypeStr(self):
-        ''' Return: string '''
-        if not hasattr(self, "_type_str"):
-            self._parseTypeMana()
-        return self._type_str
+    def _parseDesc(self):
+        self._desc = [x for x in self._root("td")[1]("p")[1].b.strings]
 
-    def getCardType(self):
-        ''' Return: non-empty list<string> '''
-        if not hasattr(self, "_tp"):
-            self._parseTypeMana()
-        return self._tp.getCardType()[:] # by value
+    def _parseQuote(self):
+        # todo: Check is it possible to have a few lines here
+        result = self._root("td")[1]("p")[2].i.text
+        self._quote = [result] if result else []
 
-    def getPower(self):
-        ''' Return: string or None''' # todo: I hope it isn't
-        if not hasattr(self, "_power"):
-            self._parseTypeMana()
-        return self._power
+    def _parseColors(self):
+       self._colors = self._decodeColors(self.getMana())
 
-    def getToughness(self):
-        ''' Return: string or None''' # todo: I hope it isn't
-        if not hasattr(self, "_tough"):
-            self._parseTypeMana()
-        return self._tough
+# Implementation of virtual interface by calls' redirect to _parseTypeMana()
+    def _parseTypeStr(self):
+        self._parseTypeMana()
+    def _parseCardType(self):
+        self._parseTypeMana()
+    def _parsePower(self):
+        self._parseTypeMana()
+    def _parseToughness(self):
+        self._parseTypeMana()
+    def _parseSubtypes(self):
+        self._parseTypeMana()
+    def _parseSupertypes(self):
+        self._parseTypeMana()
+    def _parseMana(self):
+        self._parseTypeMana()
 
-    def getSubtypes(self):
-        """ Retrun: list<string> or [] """
-        if not hasattr(self, "_tp"):
-            self._parseTypeMana()
-        return self._tp.getSubtype()[:] # by value
+# Implementation of virtual interface by calls' redirect to _parseArtId()
+    def _parseId(self):
+        self._parseArtId()
+    def _parseArt(self):
+        self._parseArtId()
 
-    def getSupertypes(self):
-        """ Retrun: list<string> or [] """
-        if not hasattr(self, "_tp"):
-            self._parseTypeMana()
-        return self._tp.getSupertype()[:] # by value
+# Implementation of virtual interface by calls' redirect to _parseSetRare
+    def _parseRare(self):
+        self._parseSetRare()
+    def _parseSet(self):
+        self._parseSetRare()
 
-    # todo: What about cards without mana cost? Lands
-    def getMana(self):
-        ''' Return string '''
-        if not hasattr(self, "_mana"):
-            self._parseTypeMana()
-        return self._mana
-
-    def getDesc(self):
-        """ Retrun: list<string> or [] """
-        if not hasattr(self, "_desc"):
-            self._parseDesc()
-        return self._desc[:] # by value
-
+# Class-specific getters
     def getLegal(self):
         """ Return: list<string> or [] """
         if not hasattr(self, "_legal"):
             self._parseLegal()
         return self._legal[:] # by value
 
-    # todo: May be None
-    def getQuote(self):
-        """ Return: list<string> or [] """
-        if not hasattr(self, "_quote"):
-            self._parseQuote()
-        return self._quote[:] # by value
-
-    def getArt(self):
-        ''' Return: string '''
-        if not hasattr(self, "_art"):
-            self._parseArtId()
-        return self._art;
-
-    def getId(self):
-        ''' Return: string ''' # not number I hope :)
-        if not hasattr(self, "_id"):
-            self._parseArtId()
-        return self._id;
-
-    def getRare(self):
-        ''' Return: string '''
-        if not hasattr(self, "_rare"):
-            self._parseSetRare()
-        return self._rare
-
-    def getSet(self):
-        ''' Return: string '''
-        if not hasattr(self, "_set"):
-            self._parseSetRare()
-        return self._set
-
-    def getColors(self):
-       ''' Return: list<string> or [] '''
-       return self._decodeColors(self.getMana())
-
-# Class-specific getters
     def getGoth(self):
         ''' Return: string '''
         if not hasattr(self, "_goth"):
