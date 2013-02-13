@@ -92,22 +92,16 @@ class GathererWizardsComParser(magic_parser.MagicParser):
         self._set = self._findNodeOf('Expansion:').div.a.img["alt"].rsplit('(')[0].strip()
 
 # Implementation of virtual interface by calls' redirect to _parsePT()
-    def _parsePower(self):
-        self._parsePT()
-    def _parseToughness(self):
-        self._parsePT()
+    _parsePower = _parsePT
+    _parseToughness = _parsePT
 
 # Implementation of virtual interface by calls' redirect to _parseTypeStr()
-    def _parseCardType(self):
-        self._parseTypeStr()
-    def _parseSubtypes(self):
-        self._parseTypeStr()
-    def _parseSupertypes(self):
-        self._parseTypeStr()
+    _parseCardType = _parseTypeStr
+    _parseSubtypes = _parseTypeStr
+    _parseSupertypes = _parseTypeStr
 
 # Implementation of virtual interface by calls' redirect to _parseMana()
-    def _parseColors(self):
-        self._parseMana()
+    _parseColors = _parseMana
 
 # not implemented yet
     def _parseLegal(self):

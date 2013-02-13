@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from bs4 import BeautifulSoup
+from abc import ABCMeta, abstractmethod
 
 # todo: All other values (Phyrexia and so on)
-class MagicParser(object):
+class MagicParser(metaclass=ABCMeta): # Abstract base class
     def __init__(self, stream):
         self._cs = BeautifulSoup(stream, "html.parser")
     
@@ -19,38 +20,38 @@ class MagicParser(object):
         return [f for f in result if f != None]
 
 # virtual interface
-    def _parseName(self):
-        assert("This method should be overrided" and False)
-    def _parseDesc(self):
-        assert("This method should be overrided" and False)
-    def _parseQuote(self):
-        assert("This method should be overrided" and False)
-    def _parseTypeStr(self):
-        assert("This method should be overrided" and False)
-    def _parseTypeStr(self):
-        assert("This method should be overrided" and False)
-    def _parseCardType(self):
-        assert("This method should be overrided" and False)
-    def _parsePower(self):
-        assert("This method should be overrided" and False)
-    def _parseToughness(self):
-        assert("This method should be overrided" and False)
-    def _parseSubtypes(self):
-        assert("This method should be overrided" and False)
-    def _parseSupertypes(self):
-        assert("This method should be overrided" and False)
-    def _parseMana(self):
-        assert("This method should be overrided" and False)
-    def _parseId(self):
-        assert("This method should be overrided" and False)
-    def _parseArt(self):
-        assert("This method should be overrided" and False)
-    def _parseRare(self):
-        assert("This method should be overrided" and False)
-    def _parseSet(self):
-        assert("This method should be overrided" and False)
-    def _parseColors(self):
-        assert("This method should be overrided" and False)
+    @abstractmethod
+    def _parseName(): pass
+    @abstractmethod
+    def _parseDesc(): pass
+    @abstractmethod
+    def _parseQuote(): pass
+    @abstractmethod
+    def _parseTypeStr(): pass
+    @abstractmethod
+    def _parseTypeStr(): pass
+    @abstractmethod
+    def _parseCardType(): pass
+    @abstractmethod
+    def _parsePower(): pass
+    @abstractmethod
+    def _parseToughness(): pass
+    @abstractmethod
+    def _parseSubtypes(): pass
+    @abstractmethod
+    def _parseSupertypes(): pass
+    @abstractmethod
+    def _parseMana(): pass
+    @abstractmethod
+    def _parseId(): pass
+    @abstractmethod
+    def _parseArt(): pass
+    @abstractmethod
+    def _parseRare(): pass
+    @abstractmethod
+    def _parseSet(): pass
+    @abstractmethod
+    def _parseColors(): pass
 
 # Accessors
     def getName(self):

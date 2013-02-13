@@ -141,7 +141,7 @@ try:
       )
       print(output_str, file=utf8stdout)
       result.append(output_str)
-      
+
     except KeyError:
       print(2, "Invalid <card> item detected")
       #except HTTPError as ex:

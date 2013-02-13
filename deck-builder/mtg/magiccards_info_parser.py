@@ -66,32 +66,21 @@ class MagiccardsInfoParser(magic_parser.MagicParser):
        self._colors = self._decodeColors(self.getMana())
 
 # Implementation of virtual interface by calls' redirect to _parseTypeMana()
-    def _parseTypeStr(self):
-        self._parseTypeMana()
-    def _parseCardType(self):
-        self._parseTypeMana()
-    def _parsePower(self):
-        self._parseTypeMana()
-    def _parseToughness(self):
-        self._parseTypeMana()
-    def _parseSubtypes(self):
-        self._parseTypeMana()
-    def _parseSupertypes(self):
-        self._parseTypeMana()
-    def _parseMana(self):
-        self._parseTypeMana()
+    _parseTypeStr = _parseTypeMana
+    _parseCardType = _parseTypeMana
+    _parsePower = _parseTypeMana
+    _parseToughness = _parseTypeMana
+    _parseSubtypes = _parseTypeMana
+    _parseSupertypes = _parseTypeMana
+    _parseMana = _parseTypeMana
 
-# Implementation of virtual interface by calls' redirect to _parseArtId()
-    def _parseId(self):
-        self._parseArtId()
-    def _parseArt(self):
-        self._parseArtId()
+# Implementation of virtual interface by calls' redirect to _parseArtId
+    _parseId = _parseArtId
+    _parseArt = _parseArtId
 
 # Implementation of virtual interface by calls' redirect to _parseSetRare
-    def _parseRare(self):
-        self._parseSetRare()
-    def _parseSet(self):
-        self._parseSetRare()
+    _parseRare = _parseSetRare
+    _parseSet = _parseSetRare
 
 # Class-specific getters
     def getLegal(self):
