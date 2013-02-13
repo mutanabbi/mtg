@@ -7,7 +7,8 @@ class MagicParser(metaclass=ABCMeta): # Abstract base class
     def __init__(self, stream):
         self._cs = BeautifulSoup(stream, "html.parser")
     
-    def _decodeColors(self, str):
+    @staticmethod
+    def _decodeColors(str):
         result = set()
         for ch in str:
             {
