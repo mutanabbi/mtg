@@ -28,7 +28,14 @@ class MagiccardsInfoParser(magic_parser.MagicParser):
         self._goth = self._root("td")[1]("p")[4].a["href"]
 
     def _parseLegal(self):
-        self._legal = [x for x in self._root("td")[1].findAll("li", {"class" : "legal"})]
+        self._legal = [
+            i[len('Legal in '):]
+            for i in (
+                x.text.strip()
+                for x in
+                self._root("td")[1].findAll("li", {"class" : "legal"})
+            )
+        ]
 
     def _parseArtId(self):
         utf8stdout = open(1, 'w', encoding='utf8', closefd=False) # fd 1 is stdout
