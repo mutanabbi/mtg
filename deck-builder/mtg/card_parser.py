@@ -24,50 +24,6 @@ class TypeLineParser(object):
     list-members outside the class
     """
 # private:
-# Constant service sets
-    _types = frozenset([
-        "artifact", "creature", "enchantment", "instant", "land", "phenomenon", "plane",
-        "planeswalker", "scheme", "sorcery", "tribal", "vanguard"
-    ])
-
-    _art_types = frozenset(["contraption", "equipment", "fortification"])
-
-    _ench_types = frozenset(["aura", "curse", "shrine"])
-
-    _spell_types = frozenset(["arcane", "trap"])
-
-    _pw_types = frozenset([
-        "ajani", "bolas", "chandra", "domri", "elspeth", "garruk", "gideon", "jace",
-        "karn", "koth", "liliana", "nissa", "sarkhan", "sorin", "tamiyo", "tezzeret",
-        "tibalt", "venser", "vraska"
-        ])
-
-    _creat_types = frozenset([
-        "advisor", "ally", "angel", "anteater", "antelope", "ape", "archer", "archon",
-        "artificer", "assassin", "assembly-worker", "atog", "aurochs", "avatar", "badger", "barbarian", "basilisk", "bat",
-        "bear", "beast", "beeble", "berserker", "bird", "blinkmoth", "boar", "bringer", "brushwagg", "camarid", "camel",
-        "caribou", "carrier", "cat", "centaur", "cephalid", "chimera", "citizen", "cleric", "cockatrice", "construct",
-        "coward", "crab", "crocodile", "cyclops", "dauthi", "demon", "deserter", "devil", "djinn", "dragon", "drake",
-        "dreadnought", "drone", "druid", "dryad", "dwarf", "efreet", "elder", "eldrazi", "elemental", "elephant", "elf", "elk",
-        "eye", "faerie", "ferret", "fish", "flagbearer", "fox", "frog", "fungus", "gargoyle", "germ", "giant", "gnome", "goat",
-        "goblin", "golem", "gorgon", "graveborn", "gremlin", "griffin", "hag", "harpy", "hellion", "hippo", "hippogriff",
-        "homarid", "homunculus", "horror", "horse", "hound", "human", "hydra", "hyena", "illusion", "imp",
-        "incarnation", "insect", "jellyfish", "juggernaut", "kavu", "kirin", "kithkin", "knight", "kobold", "kor", "kraken",
-        "lammasu", "leech", "leviathan", "lhurgoyf", "licid", "lizard", "manticore", "masticore", "mercenary",
-        "merfolk", "metathran", "minion", "minotaur", "monger", "mongoose", "monk", "moonfolk", "mutant", "myr",
-        "mystic", "nautilus", "nephilim", "nightmare", "nightstalker", "ninja", "noggle", "nomad", "octopus", "ogre",
-        "ooze", "orb", "orc", "orgg", "ouphe", "ox", "oyster", "pegasus", "pentavite", "pest", "phelddagrif", "phoenix",
-        "pincher", "pirate", "plant", "praetor", "prism", "rabbit", "rat", "rebel", "reflection", "rhino", "rigger", "rogue",
-        "salamander", "samurai", "sand", "saproling", "satyr", "scarecrow", "scorpion", "scout", "serf", "serpent", "shade",
-        "shaman", "shapeshifter", "sheep", "siren", "skeleton", "slith", "sliver", "slug", "snake", "soldier", "soltari",
-        "spawn", "specter", "spellshaper", "sphinx", "spider", "spike", "spirit", "splinter", "sponge", "squid", "squirrel",
-        "starfish", "surrakar", "survivor", "tetravite", "thalakos", "thopter", "thrull", "treefolk", "triskelavite", "troll",
-        "turtle", "unicorn", "vampire", "vedalken", "viashino", "volver", "wall", "warrior", "weird", "werewolf",
-        "whale", "wizard", "wolf", "wolverine", "wombat", "worm", "wraith", "wurm", "yeti", "zombie", "azubera"
-    ])
-
-    _supertypes = frozenset(["basic", "legendary", "ongoing", "snow", "world"])
-
     def __init__(self, str):
         s = str.strip().lower()
         s = re.sub("[—‒―]+", "", s)
@@ -95,28 +51,28 @@ class TypeLineParser(object):
         types = self.getCardType()
         if not "artifact" in types:
             raise RuntimeError("Wrong card type: " + self.getCardType())
-        self._art = self._parse("artifact subtype", self._art_types)
+        self._art = self._parse("artifact subtype", TypeLineParser._art_types)
         return self._art
 
     def _parseSpellType(self):
         types = self.getCardType()
         if not ("sorcery" in types or "instant" in types):
             raise RuntimeError("Wrong card types: " + str(types))
-        self._spell = self._parse("spell (instant or sorery) subtype", self._spell_types)
+        self._spell = self._parse("spell (instant or sorery) subtype", TypeLineParser._spell_types)
         return self._spell
 
     def _parseEnchType(self):
         types = self.getCardType()
         if not ("enchantment" in types):
             raise RuntimeError("Wrong card types: " + str(types))
-        self._ench = self._parse("enchantment subtype", self._ench_types, allow_few = True)
+        self._ench = self._parse("enchantment subtype", TypeLineParser._ench_types, allow_few = True)
         return self._ench
 
     def _parsePWType(self):
         types = self.getCardType()
         if not ("planeswalker" in types):
             raise RuntimeError("Wrong card types: " + str(types))
-        self._pw = self._parse("planeswalker subtype", self._pw_types, should_exist = True)
+        self._pw = self._parse("planeswalker subtype", TypeLineParser._pw_types, should_exist = True)
         assert("Planesvalker type is his name, so it can't be empty or none" and self._pw)
         return self._pw
 
@@ -124,7 +80,7 @@ class TypeLineParser(object):
         types = self.getCardType()
         if not ("creature" in types):
             raise RuntimeError("Wrong card types: " + str(types))
-        self._creat = self._parse("creature subtype", self._creat_types, allow_few = True)
+        self._creat = self._parse("creature subtype", TypeLineParser._creat_types, allow_few = True)
         return self._creat
 
     def _parseSuperType(self):
@@ -195,6 +151,49 @@ class TypeLineParser(object):
 
 
 
+# Constant service sets
+TypeLineParser._types = frozenset([
+    "artifact", "creature", "enchantment", "instant", "land", "phenomenon", "plane",
+    "planeswalker", "scheme", "sorcery", "tribal", "vanguard"
+])
+
+TypeLineParser._art_types = frozenset(["contraption", "equipment", "fortification"])
+
+TypeLineParser._ench_types = frozenset(["aura", "curse", "shrine"])
+
+TypeLineParser._spell_types = frozenset(["arcane", "trap"])
+
+TypeLineParser._pw_types = frozenset([
+    "ajani", "bolas", "chandra", "domri", "elspeth", "garruk", "gideon", "jace",
+    "karn", "koth", "liliana", "nissa", "sarkhan", "sorin", "tamiyo", "tezzeret",
+    "tibalt", "venser", "vraska"
+    ])
+
+TypeLineParser._creat_types = frozenset([
+    "advisor", "ally", "angel", "anteater", "antelope", "ape", "archer", "archon",
+    "artificer", "assassin", "assembly-worker", "atog", "aurochs", "avatar", "badger", "barbarian", "basilisk", "bat",
+    "bear", "beast", "beeble", "berserker", "bird", "blinkmoth", "boar", "bringer", "brushwagg", "camarid", "camel",
+    "caribou", "carrier", "cat", "centaur", "cephalid", "chimera", "citizen", "cleric", "cockatrice", "construct",
+    "coward", "crab", "crocodile", "cyclops", "dauthi", "demon", "deserter", "devil", "djinn", "dragon", "drake",
+    "dreadnought", "drone", "druid", "dryad", "dwarf", "efreet", "elder", "eldrazi", "elemental", "elephant", "elf", "elk",
+    "eye", "faerie", "ferret", "fish", "flagbearer", "fox", "frog", "fungus", "gargoyle", "germ", "giant", "gnome", "goat",
+    "goblin", "golem", "gorgon", "graveborn", "gremlin", "griffin", "hag", "harpy", "hellion", "hippo", "hippogriff",
+    "homarid", "homunculus", "horror", "horse", "hound", "human", "hydra", "hyena", "illusion", "imp",
+    "incarnation", "insect", "jellyfish", "juggernaut", "kavu", "kirin", "kithkin", "knight", "kobold", "kor", "kraken",
+    "lammasu", "leech", "leviathan", "lhurgoyf", "licid", "lizard", "manticore", "masticore", "mercenary",
+    "merfolk", "metathran", "minion", "minotaur", "monger", "mongoose", "monk", "moonfolk", "mutant", "myr",
+    "mystic", "nautilus", "nephilim", "nightmare", "nightstalker", "ninja", "noggle", "nomad", "octopus", "ogre",
+    "ooze", "orb", "orc", "orgg", "ouphe", "ox", "oyster", "pegasus", "pentavite", "pest", "phelddagrif", "phoenix",
+    "pincher", "pirate", "plant", "praetor", "prism", "rabbit", "rat", "rebel", "reflection", "rhino", "rigger", "rogue",
+    "salamander", "samurai", "sand", "saproling", "satyr", "scarecrow", "scorpion", "scout", "serf", "serpent", "shade",
+    "shaman", "shapeshifter", "sheep", "siren", "skeleton", "slith", "sliver", "slug", "snake", "soldier", "soltari",
+    "spawn", "specter", "spellshaper", "sphinx", "spider", "spike", "spirit", "splinter", "sponge", "squid", "squirrel",
+    "starfish", "surrakar", "survivor", "tetravite", "thalakos", "thopter", "thrull", "treefolk", "triskelavite", "troll",
+    "turtle", "unicorn", "vampire", "vedalken", "viashino", "volver", "wall", "warrior", "weird", "werewolf",
+    "whale", "wizard", "wolf", "wolverine", "wombat", "worm", "wraith", "wurm", "yeti", "zombie", "azubera"
+])
+
+TypeLineParser._supertypes = frozenset(["basic", "legendary", "ongoing", "snow", "world"])
 
 
 
