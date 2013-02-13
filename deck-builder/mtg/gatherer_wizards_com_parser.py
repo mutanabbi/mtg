@@ -37,7 +37,7 @@ class GathererWizardsComParser(magic_parser.MagicParser):
     def _parseWatermark(self):
         result = None
         lbl = self._findLabel('Watermark:')
-        self._watermark = self._findValueByLabel(lbl) if lbl else None
+        self._watermark = self._findValueByLabel(lbl).text.strip() if lbl else None
 
 # Implementation of virtual interface
     def _parseName(self):
@@ -52,21 +52,26 @@ class GathererWizardsComParser(magic_parser.MagicParser):
         self._mana = ', '.join(l)
         self._colors = list(set(x for x in l if x in ['green', 'white', 'blue', 'red', 'black']))
     
+    @staticmethod
+    def _deepSearch(node, result):
+        ''' Carefully! Recursion '''
+        for x in node.children:
+            assert(type(x) in [element.NavigableString, element.Tag])
+            if type(x) == element.NavigableString:
+                result.append(x.string)
+            else:
+                if type(x) == element.Tag and x.name == 'img':
+                    result.append("({})".format(x["alt"].strip()))
+                else:
+                    GathererWizardsComParser._deepSearch(x, result)
+    
     def _parseDesc(self):
         result = []
         for i in self._findNodeOf('Card Text:').findAll('div', attrs={'class': 'cardtextbox'}):
-            line = ""
-            # todo: This is might be sub procedure
-            for x in i.children:
-                assert(type(x) in [element.NavigableString, element.Tag])
-                if type(x) == element.NavigableString:
-                    line += x.string
-                else:
-                    if type(x) == element.Tag and x.name == 'img':
-                        line += "({})".format(x["alt"].strip())
-                    else:
-                        line += x.text.strip()
-            result.append(line)
+            tmp = []
+            GathererWizardsComParser._deepSearch(i, tmp)
+            # every "cardtextbox" is separate line (and item in the list)
+            result.append(''.join(tmp))
         self._desc = result
 
     def _parseQuote(self):
