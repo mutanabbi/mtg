@@ -134,7 +134,7 @@ class MagiccardsInfoParser(magic_parser.MagicParser):
         ''' Return: string '''
         if not hasattr(self, "_lo_price"):
             self._receivePrice()
-        return self._mi_price
+        return self._lo_price
 
     def getMiPrice(self):
         ''' Return: string '''
