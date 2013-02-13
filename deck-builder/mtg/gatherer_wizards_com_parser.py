@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Parser for http://gatherer.wizards.com"""
+'''Parser for http://gatherer.wizards.com'''
 from mtg import magic_parser
 from mtg.card_parser import TypeLineParser
 import re
@@ -7,11 +7,11 @@ import urllib.request
 from bs4 import element
 
 class GathererWizardsComParser(magic_parser.MagicParser):
-# private:
     def __init__(self, stream):
         super().__init__(stream)
         self._root = self._cs.html.body.find('table', attrs={'class': 'cardDetails'})
 
+# private:
     def _findLabel(self, str):
         return self._root.find('div', attrs={'class': 'label'}, text=re.compile(str))
 
@@ -24,7 +24,7 @@ class GathererWizardsComParser(magic_parser.MagicParser):
     def _findValueOf(self, str):
         return self._findNodeOf(str).text.strip()
 
-  # parsers
+# Parsers
     def _parseName(self):
         self._name = self._findValueOf('Card Name:')
 
@@ -33,8 +33,8 @@ class GathererWizardsComParser(magic_parser.MagicParser):
         self._tp = TypeLineParser(self._type_str)
 
     def _parseMana(self):
-        self._mana = list(map(lambda x: x['alt'].strip().lower(), self._findNodeOf('Mana Cost:')('img')))
-
+        self._mana = [ x['alt'].strip().lower() for x in self._findNodeOf('Mana Cost:')('img') ]
+    
     def _parseDesc(self):
         result = []
         for i in self._findNodeOf('Card Text:').findAll('div', attrs={'class': 'cardtextbox'}):
@@ -54,14 +54,12 @@ class GathererWizardsComParser(magic_parser.MagicParser):
 
     def _parseQuote(self):
         tmp = self._root.find('div', attrs={'class': 'label'}, text=re.compile('Flavor Text:'))
-        result = None
+        result = []
         if tmp:
-            result = list(
-                map(
-                    lambda i: i.string.strip(),
-                    tmp.findNextSibling('div', attrs={'class': 'value'}).findAll('div', attrs={'class': 'cardtextbox'})
-                )
-            )
+            result = [
+                i.string.strip() for i in 
+                tmp.findNextSibling('div', attrs={'class': 'value'}).findAll('div', attrs={'class': 'cardtextbox'})
+            ]
         self._quote = result
 
     def _parsePT(self):
@@ -81,7 +79,7 @@ class GathererWizardsComParser(magic_parser.MagicParser):
     def _parseSet(self):
         self._set = self._findNodeOf('Expansion:').div.a.img["alt"].rsplit('(')[0].strip()
 
-  # clsss-specific
+# Clsss-specific parsers
     def _parseCMC(self):
         self._cmc = self._findValueOf('Converted Mana Cost:')
 
@@ -90,105 +88,106 @@ class GathererWizardsComParser(magic_parser.MagicParser):
         lbl = self._findLabel('Watermark:')
         self._watermark = self._findValueByLabel(lbl) if lbl else None
 
-  # not implemented yet
+# not implemented yet
     def _parseLegal(self):
-        legal = []
-        for l in self._root("td")[1].findAll("li", {"class" : "legal"}):
-            legal.append(l.string)
-        self._legal = legal
+        pass # todo
 
 # public:
-    def parse(self):
-        self._parseName()
-        self._parseTypeMana()
-        self._parseDesc()
-        self._parseQuote()
-        self._parseLegal()
-        self._parseArtId()
-        self._parseSetRare()
-
-  # getters (getters cache requested values)
+# Getters (getters cache requested values)
     def getName(self):
+        ''' Return: string '''
         if not hasattr(self, "_name"):
             self._parseName()
         return self._name
 
     def getTypeStr(self):
+        ''' Return: string '''
         if not hasattr(self, "_type_str"):
             self._parseTypeStr()
         return self._type_str
 
     def getCardType(self):
+        ''' Return: non-empty list<string> '''
         if not hasattr(self, "_tp"):
             self._parseTypeStr()
-        return self._tp.getCardType()
+        return self._tp.getCardType()[:] # list by value
 
     def getPower(self):
+        ''' Return: string or None''' # todo: I hope it isn't number :)
         if "creature" in self.getCardType():
             if not hasattr(self, "_power"):
                 self._parsePT()
             return self._power
 
     def getToughness(self):
+        ''' Return: string or None''' # todo: I hope it isn't number :)
         if "creature" in self.getCardType():
             if not hasattr(self, "_tough"):
                 self._parsePT()
             return self._tough
 
     def getSubtypes(self):
+        """ Retrun: list<string> or [] """
         if not hasattr(self, "_tp"):
             self._parseTypeStr()
-        return self._tp.getSubtype()
+        return self._tp.getSubtype()[:] # by value
 
     def getSupertypes(self):
+        """ Retrun: list<string> or [] """
         if not hasattr(self, "_tp"):
             self._parseTypeStr()
-        return self._tp.getSupertype()
+        return self._tp.getSupertype()[:] # by value
 
+    # todo: What about cards without mana cost? Lands
     def getMana(self):
+        ''' Return string '''
         if not hasattr(self, "_mana"):
             self._parseMana()
         return ', '.join(self._mana)
 
     def getDesc(self):
-        """ Retrun: list<string>"""
+        """ Retrun: list<string> or [] """
         if not hasattr(self, "_desc"):
             self._parseDesc()
-        return self._desc
+        return self._desc[:] # by value
 
     def getQuote(self):
-        """ Return: list<string> or None"""
+        """ Return: list<string> or [] """
         if not hasattr(self, "_quote"):
             self._parseQuote()
-        return self._quote
+        return self._quote[:] # by value
 
     def getArt(self):
+        ''' Return: string '''
         if not hasattr(self, "_art"):
             self._parseArt()
         return self._art;
 
     def getId(self):
+        ''' Return: string ''' # not number I hope :)
         if not hasattr(self, "_id"):
             self._parseId()
         return self._id;
 
     def getRare(self):
+        ''' Return: string '''
         if not hasattr(self, "_rare"):
             self._parseRare()
         return self._rare
 
     def getSet(self):
+        ''' Return: string '''
         if not hasattr(self, "_set"):
             self._parseSet()
         return self._set
 
     def getColors(self):
-        """ Return: list<string>"""
+        """ Return: list<string> or [] """
         if not hasattr(self, '_mana'):
             self._parseMana()
-        return set(filter(lambda x: x in ['green', 'white', 'blue', 'red', 'black'], self._mana))
+        return list(set(x for x in self._mana if x in ['green', 'white', 'blue', 'red', 'black']))
 
-  # class-specific getters
+# Class-specific getters
     def getWatermark(self):
         """ Return: string or None """
         if not hasattr(self, '_watermark'):
@@ -196,12 +195,13 @@ class GathererWizardsComParser(magic_parser.MagicParser):
         return self._watermark
 
     def getCMC(self):
+        ''' Return: string '''
         if not hasattr(self, '_cmc'):
             self._parseCMC()
         return self._cmc
 
 
-  # not implemented yet
+# not implemented yet
     def getKeywords(self):
         pass
 

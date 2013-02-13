@@ -16,4 +16,4 @@ class MagicParser(object):
             'U' : lambda: result.add("blue"),
             'R' : lambda: result.add("red"),
             }.get(ch, lambda: None)()
-        return result #[f for f in result if f != None] 
+        return [f for f in result if f != None] 

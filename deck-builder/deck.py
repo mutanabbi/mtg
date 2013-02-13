@@ -28,7 +28,7 @@ ENTRY = '''
 </card>
 '''
 
-    #TODO
+#TODO
 #      """
 #  <price>
 #   <lo>{3}</lo>
@@ -36,23 +36,6 @@ ENTRY = '''
 #   <hi>{5}</hi>
 #  </price>
 #"""
-  
-def get_keywords(str):
-  None
-
-def decode_type(str):
-  None
-  # Instant
-  # Sorcery
-  # Planeswalker - Name (Loyalty: [0-9]+)
-  # Legendary Artifact[ — [Equipment][Contraption][Fortification]]
-  # [Legendary ][Artifact ]Creature - Suptype [Subtype2 ][ Werewolf]([0-9]+/[0-9]+)
-  # [Legendary|World ]Enchantment[ - [Aura][Curse][Shrine]]
-  # [Legendary ][Artifact ]Land[ -( Gate)|( Swamp|Mountain|Plains|Island|Forest)+]   Desert, Lair, Locus, Mine, Power-Plant, Tower, Urza's
-  # Basic [Snow ]Land Swamp|Mountain|Plains|Island|Forest
-
-      
-  
 
 
 utf8stdout = open(1, 'w', encoding='utf8', closefd=False) # fd 1 is stdout
@@ -71,10 +54,11 @@ try:
       html = f.read()
       parser = MagiccardsInfoParser(html)
       
-      addr = parser.getGoth()
-      f = urllib.request.urlopen(addr)
-      html = f.read()
-      parser = GathererWizardsComParser(html)
+      # addr = parser.getGoth()
+      # f = urllib.request.urlopen(addr)
+      # html = f.read()
+      # parser = GathererWizardsComParser(html)
+      
       # subtype_str = ""
       # supertype_str=""
       # # if (subtype): subtype_str = "<subtype>{0}</subtype>".format(subtype)
@@ -103,15 +87,14 @@ try:
       print("Art: " + str(parser.getArt()), file=utf8stdout)
       print("Set: " + parser.getSet(), file=utf8stdout)
       
-      print("CMC: " + parser.getCMC(), file=utf8stdout)
-      print("Watermark: " + str(parser.getWatermark()), file=utf8stdout)
-
+      # Specific methods
+      # print("CMC: " + parser.getCMC(), file=utf8stdout)
+      # print("Watermark: " + str(parser.getWatermark()), file=utf8stdout)
+      print("Legal: " + str(parser.getLegal()), file=utf8stdout)
 
       print("Colors: " + str(parser.getColors()), file=utf8stdout)
-
       print("Desc: " + str(parser.getDesc()), file=utf8stdout)
       print("Quote: " + str(parser.getQuote()), file=utf8stdout)
-      # print("Legal: " + str(parser.getLegal()), file=utf8stdout)
       print("Mana: " + parser.getMana(), file=utf8stdout)
       
       # print("Name: " + parser.getName(), file=utf8stdout)
@@ -134,30 +117,30 @@ try:
       # print("Mi Price: " + parser.getMiPrice(), file=utf8stdout)
       # print("Hi Price: " + parser.getHiPrice(), file=utf8stdout)
       
-      # subtype_str = ""
-      # creature_stats_str = ""
-      # output_str = ENTRY.format(
-      #    card["id"]
-      #  , card["set"]
-      #  , cnt
-      #  , parser.getName()
-      #  , parser.getLoPrice()
-      #  , parser.getMiPrice()
-      #  , parser.getHiPrice()
-      #  , "".join(map(lambda x: "    <color>{}</color>\n".format(x) , parser.getColors()))
-      #  , parser.getRare()
-      #  , parser.getTypeStr()
-      #  , subtype_str
-      #  , parser.getMana()
-      #  , creature_stats_str
-      #  , "".join(map(lambda x: "    <line>{}</line>\n".format(x), parser.getDesc()))
-      #  , "".join(map(lambda x: "    <legal>{}</legal>\n".format(x), parser.getLegal()))
-      #  , parser.getArt()
-      #  , parser.getQuote()
-      #  , parser.getGoth()
-      # )
-      # print(output_str , file=utf8stdout)
-      # result.append(output_str)
+      subtype_str = ""
+      creature_stats_str = ""
+      output_str = ENTRY.format(
+         card["id"]
+       , card["set"]
+       , cnt
+       , parser.getName()
+       , parser.getLoPrice()
+       , parser.getMiPrice()
+       , parser.getHiPrice()
+       , "".join(["    <color>{}</color>\n".format(x) for x in parser.getColors()])
+       , parser.getRare()
+       , parser.getTypeStr()
+       , subtype_str
+       , parser.getMana()
+       , creature_stats_str
+       , "".join("    <line>{}</line>\n".format(x) for x in parser.getDesc())
+       , "".join("    <legal>{}</legal>\n".format(x) for x in parser.getLegal())
+       , parser.getArt()
+       , "".join("    <line>{}</line>\n".format(x) for x in parser.getQuote())
+       , parser.getGoth()
+      )
+      print(output_str, file=utf8stdout)
+      result.append(output_str)
       
     except KeyError:
       print(2, "Invalid <card> item detected")

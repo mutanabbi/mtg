@@ -1,13 +1,30 @@
 # -*- coding: utf-8 -*-
 import re
 
+# todo: Implement this
 class CardTextParser(object):
     pass
 
-"""
-Parser for typeline MTG cards' info based on 2013 Feb 01 rules edition
-"""
+# Possible types' combinations:
+# Instant
+# Sorcery
+# Planeswalker - Name (Loyalty: [0-9]+)
+# Legendary Artifact[ — [Equipment][Contraption][Fortification]]
+# [Legendary ][Artifact ]Creature - Suptype [Subtype2 ][ Werewolf]([0-9]+/[0-9]+)
+# [Legendary|World ]Enchantment[ - [Aura][Curse][Shrine]]
+# [Legendary ][Artifact ]Land[ -( Gate)|( Swamp|Mountain|Plains|Island|Forest)+]   Desert, Lair, Locus, Mine, Power-Plant, Tower, Urza's
+# Basic [Snow ]Land Swamp|Mountain|Plains|Island|Forest
+
 class TypeLineParser(object):
+    """
+    Parser for typeline MTG cards' info based on 2013 Feb 01 rules edition
+    
+    Note: It's service primitive to use into the other parsers, so it returns
+    it'smembers by reference. Be careful to prevent changing dynamically created
+    list-members outside the class
+    """
+# private:
+# Constant service sets
     _types = frozenset([
         "artifact", "creature", "enchantment", "instant", "land", "phenomenon", "plane",
         "planeswalker", "scheme", "sorcery", "tribal", "vanguard"
@@ -60,12 +77,12 @@ class TypeLineParser(object):
     def _parse(self, msg, cont, allow_few = False, should_exist = False):
         # utf8stdout = open(1, 'w', encoding='utf-8', closefd=False)
         # print("WORDS A: " + str(list(self._words)), file=utf8stdout)
-        types = list(filter(lambda x: x in cont, self._words))
+        types = [x for x in self._words if x in cont]
         if should_exist and len(types) == 0:
             raise RuntimeError("The " + msg + " couldn't be found in the source")
         if not allow_few and len(types) > 1:
             raise RuntimeError("Too many " + msg + " values in the source string: " + types)
-        self._words = list(filter(lambda x: x not in types, self._words))
+        self._words = [x for x in self._words if x not in types]
         # print("Resutl: " + str(types), file=utf8stdout);
         # print("WORDS B: " + str(list(self._words)), file=utf8stdout)
         return types if allow_few else None if len(types) == 0 else types[0]
@@ -100,6 +117,7 @@ class TypeLineParser(object):
         if not ("planeswalker" in types):
             raise RuntimeError("Wrong card types: " + str(types))
         self._pw = self._parse("planeswalker subtype", self._pw_types, should_exist = True)
+        assert("Planesvalker type is his name, so it can't be empty or none" and self._pw)
         return self._pw
 
     def _parseCreatureType(self):
@@ -113,47 +131,63 @@ class TypeLineParser(object):
         self._super = self._parse("supertype", self._supertypes, allow_few = True)
         return self._super
 
-    # todo: refactor these getters below to avoid copypaste
+# public:
+# todo: refactor these getters below to avoid copypaste
+# Getters
     def getCardType(self):
-        return self._ctype if hasattr(self, "_ctype") else self._parseType()
+        ''' Return: non-empty list<string> '''
+        result = self._ctype if hasattr(self, "_ctype") else self._parseType()
+        assert("Card should have at least one type" and result)
+        return result
 
     def getArtifactType(self):
+        ''' Return: string or None '''
         return self._art if hasattr(self, "_art") else self._parseArtType()
 
     def getEnchantmentType(self):
+        ''' Return: list<string> or [] '''
         return self._ench if hasattr(self, "_ench") else self._parseEnchType()
 
     def getSpellType(self):
+        ''' Return: string or None '''
         return self._spell if hasattr(self, "_spell") else self._parseSpellType()
 
     def getPlaneswalkerType(self):
+        ''' Return: string '''
         return self._pw if hasattr(self, "_pw") else self._parsePWType()
 
     def getCreatureType(self):
+        ''' Return: list<string> or [] '''
         return self._creat if hasattr(self, "_creat") else self._parseCreatureType()
 
     def getSupertype(self):
+        ''' Return: list<string> or [] '''
         return self._super if hasattr(self, "_super") else self._parseSuperType()
 
     def getSubtype(self):
-        result = []
-        for i in self.getCardType():
-            result.extend({
-                "creature" : lambda: self.getCreatureType(),
-                "enchantment" : lambda: self.getEnchantmentType(),
-            }.get(i, lambda: [])())
-            result.append({
-                "artifact" : lambda: self.getArtifactType(),
-                "instant": lambda: self.getSpellType(),
-                "sorcery": lambda: self.getSpellType(),
-                "planeswalker": lambda: self.getPlaneswalkerType()
-            }.get(i, lambda: None)())
-        return list(filter(lambda x: not x == None, result))
+        ''' Return: list<string> or [] '''
+        if not hasattr(self, '_subtype'):
+            result = []
+            for i in self.getCardType():
+                result.extend({
+                    "creature" : lambda: self.getCreatureType(),
+                    "enchantment" : lambda: self.getEnchantmentType(),
+                }.get(i, lambda: [])())
+                result.append({
+                    "artifact" : lambda: self.getArtifactType(),
+                    "instant": lambda: self.getSpellType(),
+                    "sorcery": lambda: self.getSpellType(),
+                    "planeswalker": lambda: self.getPlaneswalkerType()
+                }.get(i, lambda: None)())
+            self._subtype = [x for x in result if not x == None]
+        return self._subtype
 
+# Other
     def isDone(self):
-        return len(_words) == 0
+        return len(self._words) == 0
 
     # todo: reset content
+    # todo: just DEBUG
     def getContent(self):
         return list(self._words);
 
