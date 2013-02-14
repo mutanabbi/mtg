@@ -10,6 +10,10 @@ class GathererWizardsComParser(magic_parser.MagicParser):
     def __init__(self, stream):
         super().__init__(stream)
         self._root = self._cs.html.body.find('table', attrs={'class': 'cardDetails'})
+        #todo: exception here
+        if not self._root:
+            print(stream)
+        assert(self._root)
 
 # private:
     def _findLabel(self, str):
@@ -121,12 +125,6 @@ class GathererWizardsComParser(magic_parser.MagicParser):
         if not hasattr(self, '_watermark'):
             self._parseWatermark()
         return self._watermark
-
-    def getCMC(self):
-        ''' Return: string '''
-        if not hasattr(self, '_cmc'):
-            self._parseCMC()
-        return self._cmc
 
 # not implemented yet
     def getKeywords(self):

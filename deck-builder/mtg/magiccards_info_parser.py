@@ -9,6 +9,8 @@ class MagiccardsInfoParser(magic_parser.MagicParser):
     def __init__(self, stream):
         super().__init__(stream)
         self._root = self._cs.html.body.findAll("table")[3].tr
+        #todo: exception here
+        assert(self._root)
 
 # Class-specific implementation
     def _parseTypeMana(self):
@@ -21,7 +23,9 @@ class MagiccardsInfoParser(magic_parser.MagicParser):
             self._tp = TypeLineParser(type)
             self._power, self._tough = stat.split("/")
         self._mana = mana.strip()
-        # todo: it's not necessary any more
+        rt = self._mana.rfind('(')
+        assert('Unexpected type/mana field format' and not rt == -1 and self._mana[-1] == ')')
+        self._cmc = self._mana[rt + 1: -1]
         self._type_str = type.strip()
 
     def _parseGoth(self):
@@ -80,6 +84,7 @@ class MagiccardsInfoParser(magic_parser.MagicParser):
     _parseSubtypes = _parseTypeMana
     _parseSupertypes = _parseTypeMana
     _parseMana = _parseTypeMana
+    _parseCMC = _parseTypeMana
 
 # Implementation of virtual interface by calls' redirect to _parseArtId
     _parseId = _parseArtId

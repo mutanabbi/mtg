@@ -53,6 +53,8 @@ class MagicParser(metaclass=ABCMeta): # Abstract base class
     def _parseSet(): pass
     @abstractmethod
     def _parseColors(): pass
+    @abstractmethod
+    def _parseCMC(): pass
 
 # Accessors
     def getName(self):
@@ -145,3 +147,9 @@ class MagicParser(metaclass=ABCMeta): # Abstract base class
         if not hasattr(self, "_colors"):
             self._parseColors()
         return self._colors
+
+    def getCMC(self):
+        ''' Return: string '''
+        if not hasattr(self, '_cmc'):
+            self._parseCMC()
+        return self._cmc
