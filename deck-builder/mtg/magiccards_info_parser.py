@@ -8,8 +8,12 @@ import urllib.request
 class MagiccardsInfoParser(magic_parser.MagicParser):
     def __init__(self, stream):
         super().__init__(stream)
-        self._root = self._cs.html.body.findAll("table")[3].tr
-        #todo: exception here
+        try:
+            self._root = self._cs.html.body.findAll('table')[3].tr
+        except AttributeError as ex:
+            raise magic_parser.InvalidStreamError() from ex
+        except LookupError as ex:
+            raise magic_parser.FormatError() from ex
         assert(self._root)
 
 # Class-specific implementation

@@ -9,11 +9,13 @@ from bs4 import element
 class GathererWizardsComParser(magic_parser.MagicParser):
     def __init__(self, stream):
         super().__init__(stream)
-        self._root = self._cs.html.body.find('table', attrs={'class': 'cardDetails'})
-        #todo: exception here
+        try:
+            self._root = self._cs.html.body.find('table', attrs={'class': 'cardDetails'})
+        except AttrubuteError as ex:
+            raise magic_parser.InvalidStreamError() from ex
+
         if not self._root:
-            print(stream)
-        assert(self._root)
+            raise magic_parser.FormatError()
 
 # private:
     def _findLabel(self, str):
@@ -55,7 +57,7 @@ class GathererWizardsComParser(magic_parser.MagicParser):
         l = [ x['alt'].strip().lower() for x in self._findNodeOf('Mana Cost:')('img') ]
         self._mana = ', '.join(l)
         self._colors = list(set(x for x in l if x in ['green', 'white', 'blue', 'red', 'black']))
-    
+
     @staticmethod
     def _deepSearch(node, result):
         ''' Carefully! Recursion '''
@@ -68,7 +70,7 @@ class GathererWizardsComParser(magic_parser.MagicParser):
                     result.append("({})".format(x["alt"].strip()))
                 else:
                     GathererWizardsComParser._deepSearch(x, result)
-    
+
     def _parseDesc(self):
         result = []
         for i in self._findNodeOf('Card Text:').findAll('div', attrs={'class': 'cardtextbox'}):
@@ -83,7 +85,7 @@ class GathererWizardsComParser(magic_parser.MagicParser):
         result = []
         if tmp:
             result = [
-                i.string.strip() for i in 
+                i.string.strip() for i in
                 tmp.findNextSibling('div', attrs={'class': 'value'}).findAll('div', attrs={'class': 'cardtextbox'})
             ]
         self._quote = result
