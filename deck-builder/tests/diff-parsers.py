@@ -3,28 +3,24 @@
 from mtg.magiccards_info_parser import *
 from mtg.gatherer_wizards_com_parser import *
 from bs4 import BeautifulSoup
-#import urllib.request
 from http.client import HTTPConnection, HTTPException
-#import sys
 import time
 from contextlib import ExitStack, closing
 import concurrent.futures
-#import re
-#import codecs
 
 ENTRY = '''
 <tr>
-	<td class="label">{}</td>
-	<td>{}</td>
-	<td>{}</td>
+    <td class="label">{}</td>
+    <td>{}</td>
+    <td>{}</td>
 </tr>
 '''
 
 BODY = '''
 <html>
-	<head>
+    <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Parsers comparation</title>
+        <title>Parsers comparation</title>
         <style type="text/css">
         table {{
         width: 100%;
@@ -36,16 +32,16 @@ BODY = '''
         tr, td {{ border-style: solid; border-color: black; border-width: 1px; }}
         td.label {{ background-color: grey; }}
         </style>
-	</head>
+    </head>
     <body>
     <table>
-    	<thead>
-    		<tr>
-    			<td class="label">Field</td>
-    			<td class="label">magicards.info</td>
-    			<td class="label">gathering.wizards.com</td>
-    		</tr>
-    	</thead>
+        <thead>
+            <tr>
+                <td class="label">Field</td>
+                <td class="label">magicards.info</td>
+                <td class="label">gathering.wizards.com</td>
+            </tr>
+        </thead>
         <tbody>{}</tbody>
     </table>
     </body>
@@ -72,7 +68,7 @@ CARDS_NO = 0 # Just statistic
 with ExitStack() as es:
     card_list = es.enter_context(open("deck.xml", "r"))
     output = es.enter_context(open("diff.html", "w", encoding='utf-8'))
-    
+
     content = card_list.read()
     soup = BeautifulSoup(content)
     result = []
@@ -95,9 +91,7 @@ with ExitStack() as es:
         stack = {}
 
         def process_cards(cnt):
-            #print('>>process_cards')
             for x in range(0, min(cnt, len(cards))):
-                #print('ILYA 11')
                 card = cards.pop()
                 set, id = card['set'], card['id']
                 url = "http://magiccards.info/{0}/en/{1}.html".format(set, id)
@@ -109,60 +103,49 @@ with ExitStack() as es:
                 )
                 assert(not f in f2u.keys())
                 f2u[f] = (url, None, (set, id, t))
-            #print('<< process_cards')
-        
+
         process_cards(MAGIC_NO)
-        # (min(cnt, len(cards))) assert('All magiccards.info connections should be used' and not magic_conn)
-        
+
         def process_stack(url):
             assert(wizards_conn)
-            #print('process_stack')
             prs, meta = stack[url]
             set, id, t = meta
             print('<S> set: "{:3}" id: {:3} - {:5.4f}: '.format(
-                set, 
-                id, 
+                set,
+                id,
                 round(time.clock() - t, 2)
             ), end='')
             if 'magiccards.info' in url:
-                #print('ILYA 3')
                 next_url = prs.getGoth()
-                #print('ILYA 4')
                 f2u[executor.submit(load_url, next_url, wizards_conn.pop())] = (next_url, prs, meta)
                 del stack[url]
                 print('Next', end='')
             else:
                 assert(not "Couldn't be here")
                 # todo: But it is possible for other urls, if we will have more than 2 connections' pools
-                ##print('ILYA 5')
                 #assert('gatherer.wizards.com' in url)
                 #wizards_conn.append(conn)
                 #prs = GathererWizardsComParser(data)
                 #do_job(prev_prs, prs)
                 #print('End', end='')
-        
+
         def process_data(url, prev_prs, meta, data, conn, timing):
-            #print('process_data')
             set, id, t = meta
             print('<D> set: "{:3}" id: {:3} - {:5.4f}: '.format(
-                set, 
-                id, 
+                set,
+                id,
                 round(timing[1] - timing[0], 4)
             ), end='')
             assert(data)
             if 'magiccards.info' in url:
-                #print('ILYA 6')
                 magic_conn.append(conn)
                 prs = MagiccardsInfoParser(data)
                 next_url = prs.getGoth()
                 assert("Looks like a loop" and not prev_prs)
                 if wizards_conn:
-                    #print('ILYA 7')
                     f2u[executor.submit(load_url, next_url, wizards_conn.pop())] = (next_url, prs, meta)
                     print('Done', end='')
                 else:
-                    #print('ILYA 8')
-                    ## DEBUG
                     #if not (url not in stack.keys()):
                     #    print('SOMETHING REALY WRONG: ' + str((url, str(stack.keys()))))
                     # todo: this is real situation assert(url not in stack.keys())
@@ -170,23 +153,14 @@ with ExitStack() as es:
                     stack[url] = prs, meta
                     print('To stack', end='')
             else:
-                #print('ILYA 9')
                 assert('gatherer.wizards.com' in url)
                 wizards_conn.append(conn)
                 assert(data)
                 prs = GathererWizardsComParser(data)
                 do_job(prev_prs, prs)
                 print('Done', end='')
-        
+
         def do_job(prs1, prs2):
-            # s = 'ID: ' + card["id"] + '; SET: ' + card["set"]
-            # print(s)
-            # result.append('<tr><td class="label" colspan=3>{}</td></tr>\n'.format(s))
-            # result.append(ENTRY.format(
-            #     "Href",
-            #     '<a href="{0}">{0}</a>'.format(addr1),
-            #     '<a href="{0}">{0}</a>'.format(addr2)
-            # ))
             assert(prs1 and prs2)
             print(prs1.getGoth() + ': ', end='')
             result.append(ENTRY.format("Name", prs1.getName(), prs2.getName()))
@@ -202,7 +176,7 @@ with ExitStack() as es:
             result.append(ENTRY.format("Rarity", prs1.getRare(), prs2.getRare()))
             result.append(ENTRY.format("Art", str(prs1.getArt()), str(prs2.getArt())))
             result.append(ENTRY.format("Set", prs1.getSet(), prs2.getSet()))
-            
+
             result.append(ENTRY.format("Colors", str(prs1.getColors()), str(prs2.getColors())))
             result.append(ENTRY.format("Desc", str(prs1.getDesc()), str(prs2.getDesc())))
             result.append(ENTRY.format("Quote", str(prs1.getQuote()), str(prs2.getQuote())))
@@ -211,47 +185,34 @@ with ExitStack() as es:
 
             # Specific methods
             result.append(ENTRY.format("Watermark", "Not supported", str(prs2.getWatermark())))
-        
+
             result.append(ENTRY.format("PriceSrc", prs1.getPriceSrc(), "Not supported"))
             result.append(ENTRY.format("Lo Price", prs1.getLoPrice(), "Not supported"))
             result.append(ENTRY.format("Mi Price", prs1.getMiPrice(), "Not supported"))
             result.append(ENTRY.format("Hi Price", prs1.getHiPrice(), "Not supported"))
-        
-        
+
+
         while f2u:
             tfb = time.clock()
             for future in concurrent.futures.as_completed(list(f2u)):
                 try:
-                    #print('>>>')
-                    #print(round(time.clock() - te, 4))
-                    #print('ILYA 1: ' + str(len(f2u)))
-                    #print('Request is done')
                     url, prev_prs, meta = f2u[future]
                     data, conn, timing = future.result()
                     tfe = time.clock()
 
                     for k in [x for x in stack.keys()]:
                         if not wizards_conn:
-                            #print('ILYA 2')
                             break
                         print('[{:>4.4f}] '.format(round(tfe - tfb, 4)), end='')
                         t = time.clock()
                         process_stack(k)
                         print(' [{:4.4f}]'.format(round(time.clock() - t, 4)))
-                        
+
                     process_cards(len(magic_conn))
-                    #print('\r[{:>4.2f}]  set: "{:3}" id: {:3} - {:5.2f}: '.format(
-                    #    round(tfe - tfb, 4),
-                    #    set,
-                    #    id,
-                    #    round(tfe - t, 4)
-                    # ), end='')
                     print('[{:>4.4f}] '.format(round(tfe - tfb, 4)), end='')
                     t = time.clock()
                     process_data(url, prev_prs, meta, data, conn, timing)
                     print(' [{:4.4f}]'.format(round(time.clock() - t, 4)), end='')
-                    #print('ILYA 10')
-                    #te = time.clock()
                 except HTTPException as ex:
                     print('HTTP Error', end='')
                     # print('\n\rHTTP Error: ' + str(ex))
@@ -263,31 +224,12 @@ with ExitStack() as es:
                     print('')
                     #print('<<< [{:4.2f}]'.format(round(time.clock() - tfe, 4)))
                     tfb = time.clock()
-            
+
         assert('All futures should be processed' and not(f2u or stack))
-   
-        #     #try:
-        #     #    data = future.result()
-        #     #except Exception as exc:
-        #     #    print('{} generated an exception: {}'.format(url, exc))
-        #     #else:
-        #     #    print('{} page is {} bytes'.format(url, len(data)))
-        # 
-        # for card in soup.findAll("card"):
-        #     try:
-        #         
-        #     except KeyError:
-        #         print(2, "Invalid <card> item detected")
-        #     #except HTTPError as ex:
-        #     #  if (ex.code == 404):
-        #     #    print ("Invalid card identifier: " + card["set"] + "#" + card["id"])
-        #     #  else:
-        #     #    print ("Server is down: " + ex.code)
-    
+
     output.write(BODY.format('\n'.join(result)))
 
-#print("\n".join(str(x) for x in timing))
 print("{} cards for {} sec".format(CARDS_NO, round(time.clock() - tb, 2)))
-    
+
 
 

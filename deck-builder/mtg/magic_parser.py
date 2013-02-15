@@ -9,7 +9,6 @@ class Error(RuntimeError):
 
 class FormatError(Error):
     def __init__(ex, s = ""):
-        #print(str(s))
         super().__init__("Unsuppoerted html stream format" + (": " + s) if s else "")
 
 class InvalidStreamError(Exception):
@@ -117,14 +116,14 @@ class MagicParser(metaclass=ABCMeta): # Abstract base class
 
     @_exprotect
     def getPower(self):
-        ''' Return: string or None''' # todo: I hope it isn't
+        ''' Return: string or None''' # todo: I hope it isn't int
         if not hasattr(self, "_power"):
             self._parsePower()
         return self._power
 
     @_exprotect
     def getToughness(self):
-        ''' Return: string or None''' # todo: I hope it isn't
+        ''' Return: string or None''' # todo: I hope it isn't int
         if not hasattr(self, "_tough"):
             self._parseToughness()
         return self._tough
