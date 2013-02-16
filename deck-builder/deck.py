@@ -9,8 +9,8 @@ import re
 import codecs
 import time
 
-HEADER = "<deque>\n"
-FOOTER = "\n</deque>"
+HEADER = "<deck>\n"
+FOOTER = "\n</deck>"
 ENTRY = '''
 <card id="{0}" set="{1}" cnt="{2}">
   <name>{3}</name>

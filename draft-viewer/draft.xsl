@@ -61,7 +61,7 @@
         <br/>
 
         <select class="select-vgt" id="dv_pick">
-          <xsl:for-each select="game/draft/deque[1]/circle[1]/card">
+          <xsl:for-each select="game/draft/deck[1]/circle[1]/card">
             <option value="{position()}">
               <xsl:text>Пик </xsl:text> <xsl:value-of select="position()"/></option>
           </xsl:for-each>
@@ -113,7 +113,7 @@
             <xsl:variable name="local:booster-pos" select="position()" />
             <div class="dv_image_pack{position()}">
 
-              <xsl:for-each select="/game/draft/deque[@player=$local:cur-player]/circle[@booster=$local:booster]/card">
+              <xsl:for-each select="/game/draft/deck[@player=$local:cur-player]/circle[@booster=$local:booster]/card">
                 <xsl:variable name="local:pick-pos" select="position()" />
 
                 <!-- Нижележащий DIV необходимо сгенерировать для каждого пика в игре -->
@@ -139,7 +139,7 @@
                       <xsl:value-of select="$local:orientation" />
                     </div>
                     -->
-                    <xsl:apply-templates select="/game/draft/deque[@player=$local:player]/circle[@booster=$local:booster]/card[((position() - 1 + $local:orientation * (($local:cur-player-pos - 1) - ($local:player-pos - 1))  - ($local:pick-pos - 1)) mod $local:num = 0) and (position() >= $local:pick-pos)]" >
+                    <xsl:apply-templates select="/game/draft/deck[@player=$local:player]/circle[@booster=$local:booster]/card[((position() - 1 + $local:orientation * (($local:cur-player-pos - 1) - ($local:player-pos - 1))  - ($local:pick-pos - 1)) mod $local:num = 0) and (position() >= $local:pick-pos)]" >
                       <xsl:with-param name="local:card-booster" select="$local:booster"/>
                       <xsl:with-param name="local:is-active-player" select="$local:player-pos = $local:cur-player-pos"/>
                     </xsl:apply-templates>

@@ -1,4 +1,5 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE game SYSTEM "draft.dtd">
 <?xml-stylesheet type="text/xsl" href="draft.xsl" version="1.0" ?>
 
 <game>
@@ -73,7 +74,7 @@
 
 <!-- Важно: Порядок перечисления карт (тег <card>) внутри <circle> должен совпадать с порядком, в котором игрок их выбирал на соответствующем пике -->
 <draft>
-  <deque player="t">
+  <deck player="t">
    <circle booster="rtr">
       <!-- Для проверки. Бустер на пике 1: 23, 114, 90, 26, 154, 116, 223, 193, 156, 233, 165, 129, 25, 202 -->
       <card id="202" />
@@ -125,9 +126,9 @@
       <card id="50" />
       <card id="151" />
     </circle>
-  </deque>
+  </deck>
 
-  <deque player="p">
+  <deck player="p">
     <circle booster="rtr">
       <!-- Бустер на пике 1: 193, 196, 76, 154, 119, 126, 22, 80, 9, 11, 133, 122, 190, 233 -->
       <card id="190" />
@@ -179,9 +180,9 @@
       <card id="93" />
       <card id="58" />
     </circle>
-  </deque>
+  </deck>
 
-  <deque player="m">
+  <deck player="m">
     <circle booster="rtr">
       <!-- Бустер на пике 1: 237, 209, 200, 4, 23, 105, 233, 93, 109, 11, 240, 26, 190, 22 -->
       <card id="26" />
@@ -233,9 +234,9 @@
       <card id="217" />
       <card id="137" />
     </circle>
-  </deque>
+  </deck>
 
-  <deque player="d">
+  <deck player="d">
     <circle booster="rtr">
       <!-- Бустер на пике 1: 169, 241, 165, 42, 144, 26, 22, 91, 16, 151, 133, 233, 124, 190-->
       <card id="133" />
@@ -287,7 +288,7 @@
       <card id="213" />
       <card id="122" />
     </circle>
-  </deque>
+  </deck>
 </draft>
 
 </game>

@@ -1,0 +1,23 @@
+<!ENTITY % set-list "(gtc|rtr|avr|dka|isd|nph|mbs|som|roe|wwk|zen|arb|cfx|ala|eve|shm|mt|lw|fut|pc|ts|tsts|cs|di|gp|rav|m13|m12|m11|m10|10e|9e|sok|bok|chk|5dn|ds|mi)">
+
+<!ELEMENT deck (date?, title?, author?, sets, cards)>
+    <!ELEMENT date (#PCDATA)>
+    <!ELEMENT title (#PCDATA)>
+    <!ELEMENT author (#PCDATA)>
+
+    
+    <!ELEMENT sets (set+)>
+        <!ELEMENT set (#PCDATA)>
+            <!ATTLIST set
+                id %set-list; 
+            #REQUIRED
+            >
+ 
+    <!ELEMENT cards (card+)>
+        <!ELEMENT setd (#PCDATA)>
+        <!ELEMENT card EMPTY>
+            <!ATTLIST card
+                id CDATA #REQUIRED
+                set %set-list; #REQUIRED
+                cnt CDATA #IMPLIED
+            >

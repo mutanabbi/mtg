@@ -1,5 +1,7 @@
-<?xml version="1.0" ?>
-<?xml-stylesheet type="text/xsl" href="draft.xsl" version="1.0" ?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE game SYSTEM "draft.dtd">
+<!--<?xml-stylesheet type="text/xsl" href="draft.xsl" version="1.0" ?>-->
+
 <game>
 <players>
   <player id="i">Колесникович Илья</player>
@@ -14,7 +16,7 @@
 </boosters>
 
 <draft>
- <deque player="i">
+ <deck player="i">
    <circle booster="m13">
      <card id="111" />
      <card id="222" />
@@ -30,9 +32,9 @@
      <card id="212" />
      <card id="46" />
    </circle>
- </deque>
+ </deck>
 
- <deque player="a">
+ <deck player="a">
    <circle booster="m13">
      <card id="113" />
      <card id="223" />
@@ -48,9 +50,9 @@
      <card id="225" />
      <card id="50" />
    </circle>
- </deque>
+ </deck>
 
- <deque player="m">
+ <deck player="m">
    <circle booster="m13">
      <card id="11" />
      <card id="22" />
@@ -66,6 +68,6 @@
      <card id="21" />
      <card id="6" />
    </circle>
- </deque>
+ </deck>
 </draft>
 </game>

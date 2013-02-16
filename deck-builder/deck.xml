@@ -1,10 +1,24 @@
 <?xml version="1.0" ?>
-<deque>
-  <sets>
-    <set id="rt">Возвращение в Равнику<set/>
-  <sets/>
+<!DOCTYPE deck SYSTEM "deck-input.dtd">
+<deck>
+    <date>17-02-2013</date>
+    <title>Test Deck</title>
+    <author>Bruce Wayne</author>
+
+    <sets>
+        <set id="rtr">Возвращение в Равнику</set>
+    </sets>
 
   <cards>
+    <!-- todo:
+    <set id="rtr">
+        <card id="129" cnt="4" />
+        <card id="199" cnt="4" />
+        <card id="141" cnt="4" />
+        <card id="142" cnt="1" />
+        <card id="200" />
+    <set/>
+    -->
     <card id="129" set="rtr" cnt="4" />
     <!-- There are problems with ptc cards. Different page structure (Promo cards) -->
     <card id="64" set="gtc" cnt="2" />
@@ -13,9 +27,9 @@
     <card id="142" set="rtr" cnt="1" />
     <card id="200" set="rtr" />
     <card id="94" set="isd" />
-    <card id="260" set="shm" ctn="2"/>
+    <card id="260" set="shm" cnt="2"/>
 
-    <!-- No such card at magicards.info. Investigate <card id="64" set="isd" cnt="2" /> -->
+    <card id="64" set="isd" cnt="2" /> <!-- No such card at magicards.info. Investigate -->
     <card id="199" set="isd" cnt="4" />
     <card id="141" set="isd" cnt="4" />
     <card id="142" set="isd" cnt="1" />
@@ -27,20 +41,20 @@
     <card id="142" set="isd" cnt="1" />
     <card id="200" set="isd" />
     <card id="94" set="rtr" />
-    <!-- Mountain. Problem with parser <card id="260" set="isd" ctn="2"/> -->
+    <card id="260" set="isd" cnt="2"/> <!-- Mountain. Problem with parser -->
     <card id="199" set="gtc" cnt="4" />
     <card id="141" set="gtc" cnt="4" />
     <card id="142" set="gtc" cnt="1" />
     <card id="200" set="gtc" />
     <card id="94" set="gtc" />
-    <!-- No such card at magicards.info. Investigate <card id="260" set="gtc" ctn="2"/> -->
-    <!-- Swamp. Problem with parser <card id="260" set="rtr" ctn="2"/> -->
+    <card id="260" set="gtc" cnt="2"/> <!-- No such card at magicards.info. Investigate -->
+    <card id="260" set="rtr" cnt="2"/> <!-- Swamp. Problem with parser -->
     <card id="64" set="rtr" cnt="2" />
     <card id="199" set="gtc" cnt="4" />
     <card id="141" set="gtc" cnt="4" />
     <card id="142" set="gtc" cnt="1" />
     <card id="200" set="gtc" />
     <card id="94" set="gtc" />
-    <card id="20" set="gtc" ctn="2"/>
+    <card id="20" set="gtc" cnt="2"/>
 </cards>
-<deque/>
+</deck>
