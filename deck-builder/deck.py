@@ -7,6 +7,7 @@ import urllib.request
 import sys
 import re
 import codecs
+import time
 
 HEADER = "<deque>\n"
 FOOTER = "\n</deque>"
@@ -37,7 +38,7 @@ ENTRY = '''
 #  </price>
 #"""
 
-
+tb = time.clock()
 utf8stdout = open(1, 'w', encoding='utf8', closefd=False) # fd 1 is stdout
 card_list = open("deck.xml", "r")
 output = open("deck-processed.xml", "w", encoding='utf-8')
@@ -142,7 +143,7 @@ try:
       print(output_str, file=utf8stdout)
       result.append(output_str)
 
-    except KeyError:
+    except magic_parser.Error:
       print(2, "Invalid <card> item detected")
       #except HTTPError as ex:
       #  if (ex.code == 404):
@@ -158,3 +159,5 @@ finally:
   output.close()
   card_list.close()
   utf8stdout.close()
+  
+print(round(time.clock() - tb, 4))

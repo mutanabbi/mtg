@@ -186,10 +186,10 @@ with ExitStack() as es:
             # Specific methods
             result.append(ENTRY.format("Watermark", "Not supported", str(prs2.getWatermark())))
 
-            result.append(ENTRY.format("PriceSrc", prs1.getPriceSrc(), "Not supported"))
-            result.append(ENTRY.format("Lo Price", prs1.getLoPrice(), "Not supported"))
-            result.append(ENTRY.format("Mi Price", prs1.getMiPrice(), "Not supported"))
-            result.append(ENTRY.format("Hi Price", prs1.getHiPrice(), "Not supported"))
+            #result.append(ENTRY.format("PriceSrc", prs1.getPriceSrc(), "Not supported"))
+            #result.append(ENTRY.format("Lo Price", prs1.getLoPrice(), "Not supported"))
+            #result.append(ENTRY.format("Mi Price", prs1.getMiPrice(), "Not supported"))
+            #result.append(ENTRY.format("Hi Price", prs1.getHiPrice(), "Not supported"))
 
 
         while f2u:
