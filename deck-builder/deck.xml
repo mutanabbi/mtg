@@ -35,26 +35,26 @@
     <card id="142" set="isd" cnt="1" />
     <card id="200" set="isd" />
     <card id="94" set="rtr" />
-    <card id="64" set="gtc" cnt="2" />
-    <card id="199" set="isd" cnt="4" />
-    <card id="141" set="isd" cnt="4" />
-    <card id="142" set="isd" cnt="1" />
-    <card id="200" set="isd" />
-    <card id="94" set="rtr" />
+    <!-- todo: How to process doubles? <card id="64" set="gtc" cnt="2" /> -->
+    <!-- <card id="199" set="isd" cnt="4" /> -->
+    <!-- <card id="141" set="isd" cnt="4" /> -->
+    <!-- <card id="142" set="isd" cnt="1" /> -->
+    <!-- <card id="200" set="isd" /> -->
+    <card id="94" set="m13" />
     <card id="260" set="isd" cnt="2"/> <!-- Mountain. Problem with parser -->
-    <card id="199" set="gtc" cnt="4" />
+    <!-- <card id="199" set="gtc" cnt="4" /> -->
     <card id="141" set="gtc" cnt="4" />
     <card id="142" set="gtc" cnt="1" />
-    <card id="200" set="gtc" />
+    <card id="200" set="m13" />
     <card id="94" set="gtc" />
     <card id="260" set="gtc" cnt="2"/> <!-- No such card at magicards.info. Investigate -->
     <card id="260" set="rtr" cnt="2"/> <!-- Swamp. Problem with parser -->
     <card id="64" set="rtr" cnt="2" />
     <card id="199" set="gtc" cnt="4" />
-    <card id="141" set="gtc" cnt="4" />
-    <card id="142" set="gtc" cnt="1" />
+    <card id="141" set="m13" cnt="4" />
+    <card id="142" set="m13" cnt="1" />
     <card id="200" set="gtc" />
-    <card id="94" set="gtc" />
+    <card id="94" set="m12" />
     <card id="20" set="gtc" cnt="2"/>
 </cards>
 </deck>
