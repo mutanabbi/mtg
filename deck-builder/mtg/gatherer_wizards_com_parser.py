@@ -11,7 +11,7 @@ class GathererWizardsComParser(magic_parser.MagicParser):
         super().__init__(stream)
         try:
             self._root = self._cs.html.body.find('table', attrs={'class': 'cardDetails'})
-        except AttrubuteError as ex:
+        except AttributeError as ex:
             raise magic_parser.InvalidStreamError() from ex
 
         if not self._root:

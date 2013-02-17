@@ -3,7 +3,6 @@
 from mtg import magic_parser
 from mtg.card_parser import TypeLineParser
 import re
-import urllib.request
 
 class MagiccardsInfoParser(magic_parser.MagicParser):
     def __init__(self, stream):
@@ -114,16 +113,6 @@ class MagiccardsInfoParser(magic_parser.MagicParser):
     # todo
     #def getKeywords(self): pass
 
-# Price getters
-    # get data from TCGPlayer.com
-    # todo: I think it should be separate class data-provider
-    def _receivePrice(self):
-        f = urllib.request.urlopen(self.getPriceSrc())
-        html = f.read()
-        m = re.search(r".(\$[0-9.]+).*(\$[0-9.]+).*(\$[0-9.]+)", str(html))
-        assert(len(m.groups()) == 3)
-        self._lo_price, self._mi_price, self._hi_price = m.groups()
-
     def _parsePriceSrc(self):
         self._price_src = self._root.td.script["src"]
 
@@ -133,21 +122,24 @@ class MagiccardsInfoParser(magic_parser.MagicParser):
             self._parsePriceSrc()
         return self._price_src
 
+
+class TCGParser(object):
+    # TCGPlayer.com (price data) parser
+    def __init__(self, stream):
+        m = re.search(r".(\$[0-9.]+).*(\$[0-9.]+).*(\$[0-9.]+)", str(stream))
+        if not (m and len(m.groups()) == 3):
+            raise magic_parser.FormatError()
+        self._lo_price, self._mi_price, self._hi_price = m.groups()
+
     def getHiPrice(self):
         ''' Return: string '''
-        if not hasattr(self, "_hi_price"):
-            self._receivePrice()
         return self._hi_price
 
     def getLoPrice(self):
         ''' Return: string '''
-        if not hasattr(self, "_lo_price"):
-            self._receivePrice()
         return self._lo_price
 
     def getMiPrice(self):
         ''' Return: string '''
-        if not hasattr(self, "_mi_price"):
-            self._receivePrice()
         return self._mi_price
 
