@@ -162,12 +162,12 @@ if __name__ == "__main__":
 
 
                 def do_stage_1(key, future):
-                    #print ('>>> do_stage_1')
                     STAGE = 1
                     id, set = key
                     data, (req_t, res_t) = future.result()
                     assert(data)
                     stage, meta = states[key]
+                    
                     assert(stage[0] == True)
                     stage[STAGE] = True # Mark stage 1 done
                     print('<1> set: "{:3}" id: {:3} - {:5.4f}: '.format(
@@ -175,6 +175,7 @@ if __name__ == "__main__":
                         id,
                         round(res_t - req_t, 4)
                     ))
+                    
                     prs = GathererWizardsComParser(data)
                     assert(meta[STAGE] == None)
                     meta[STAGE] = prs
@@ -190,9 +191,7 @@ if __name__ == "__main__":
                     assert(data)
                     stage, meta = states[key]
                     assert(stage[0] == True)
-                    #print('Marking stage 2 as Done: {} {}'.format(STAGE, str(stage)), end='')
                     stage[STAGE] = True # Mark stage 1 done
-                    #print(' ' + str(stage))
                     print('<2> set: "{:3}" id: {:3} - {:5.4f}: '.format(
                         set,
                         id,
@@ -288,14 +287,12 @@ if __name__ == "__main__":
 
                             if "magiccards.info" in url:
                                 do_stage_0(key, future)
+                            elif "gatherer.wizards.com" in url:
+                                do_stage_1(key, future)
+                            elif "tcgplayer.com" in url:
+                                do_stage_2(key, future)
                             else:
-                                if "gatherer.wizards.com" in url:
-                                    do_stage_1(key, future)
-                                else:
-                                    if "tcgplayer.com" in url:
-                                        do_stage_2(key, future)
-                                    else:
-                                        assert(not "Couldn't be here")
+                                assert(not "Couldn't be here")
 
                             break
                         assert('Looks like an empty cycle' and is_come_job_did)

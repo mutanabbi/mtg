@@ -24,7 +24,6 @@ class Connection(object):
         return self.release()
 
     def release(self):
-        #print('Release')
         with self.__lck:
             self.__cp[self.__ch].append(self.__conn)
 
@@ -38,11 +37,9 @@ class ConnectionPool(object):
         self.__cntrs = {x: 0 for x in range(0, len(self.__domains))}
 
     def __enter__(self):
-        #print ('Enter')
         return self
 
     def __exit__(self, type, value, traceback):
-        #print ('Exit')
         with self.__lck:
             for k in self.__cp:
                 while self.__cp[k]:
@@ -67,7 +64,6 @@ class ConnectionPool(object):
             if (not self.__cp[ch] and self.__cntrs[ch] == self.__limit):
                 raise LimitError()
             if not self.__cp[ch]:
-                #print('New conn')
                 self.__cp[ch].append(HTTPConnection(self.__domains[ch]))
                 self.__cntrs[ch] += 1
 
