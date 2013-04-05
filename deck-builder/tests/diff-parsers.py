@@ -167,7 +167,7 @@ if __name__ == "__main__":
                     data, (req_t, res_t) = future.result()
                     assert(data)
                     stage, meta = states[key]
-                    
+
                     assert(stage[0] == True)
                     stage[STAGE] = True # Mark stage 1 done
                     print('<1> set: "{:3}" id: {:3} - {:5.4f}: '.format(
@@ -175,7 +175,7 @@ if __name__ == "__main__":
                         id,
                         round(res_t - req_t, 4)
                     ))
-                    
+
                     prs = GathererWizardsComParser(data)
                     assert(meta[STAGE] == None)
                     meta[STAGE] = prs
