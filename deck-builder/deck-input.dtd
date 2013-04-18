@@ -5,14 +5,14 @@
     <!ELEMENT title (#PCDATA)>
     <!ELEMENT author (#PCDATA)>
 
-    
+
     <!ELEMENT sets (set+)>
         <!ELEMENT set (#PCDATA)>
             <!ATTLIST set
-                id %set-list; 
+                id %set-list;
             #REQUIRED
             >
- 
+
     <!ELEMENT cards (card+)>
         <!ELEMENT setd (#PCDATA)>
         <!ELEMENT card EMPTY>

@@ -12,8 +12,8 @@
         <!ELEMENT booster (#PCDATA)>
             <!ATTLIST booster
                 id %set-list; #REQUIRED>
- 
-    <!ELEMENT draft (deck+)> 
+
+    <!ELEMENT draft (deck+)>
         <!ELEMENT deck (circle+)>
             <!ATTLIST deck player IDREF #REQUIRED>
             <!ELEMENT circle (card+)>

@@ -91,7 +91,7 @@ a:hover {
 div[class^="dv_image_player"], div[class^="dv_image_pack"], div[class^="dv_image_pick"] {
   display: none;
 }
- 
+
  a#dv_prev_pick_link {
   display: none;
  }

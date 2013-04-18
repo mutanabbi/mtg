@@ -54,16 +54,16 @@ try:
       f = urllib.request.urlopen(addr)
       html = f.read()
       parser = MagiccardsInfoParser(html)
-      
+
       addr = parser.getGoth()
       f = urllib.request.urlopen(addr)
       html = f.read()
       parser = GathererWizardsComParser(html)
-      
+
       # subtype_str = ""
       # supertype_str=""
       # # if (subtype): subtype_str = "<subtype>{0}</subtype>".format(subtype)
-      # 
+      #
       # creature_stats = ""
       # "<pwr></pwr>"
       # "<life></life>"
@@ -71,7 +71,7 @@ try:
       #  <keywords>
       #    <keyword></keyword>
       #  </keywords>"""
-       
+
       # Just DEBUG
       print("")
       print(addr)
@@ -87,7 +87,7 @@ try:
       print("Rarity: " + parser.getRare(), file=utf8stdout)
       print("Art: " + str(parser.getArt()), file=utf8stdout)
       print("Set: " + parser.getSet(), file=utf8stdout)
-      
+
       # Specific methods
       print("CMC: " + parser.getCMC(), file=utf8stdout)
       print("Watermark: " + str(parser.getWatermark()), file=utf8stdout)
@@ -97,7 +97,7 @@ try:
       print("Desc: " + str(parser.getDesc()), file=utf8stdout)
       print("Quote: " + str(parser.getQuote()), file=utf8stdout)
       print("Mana: " + parser.getMana(), file=utf8stdout)
-      
+
       # print("Name: " + parser.getName(), file=utf8stdout)
       # print("CardType: " + parser.getCardType(), file=utf8stdout)
       # print("Power: " + str(parser.getPower()), file=utf8stdout)
@@ -117,7 +117,7 @@ try:
       # print("Lo Price: " + parser.getLoPrice(), file=utf8stdout)
       # print("Mi Price: " + parser.getMiPrice(), file=utf8stdout)
       # print("Hi Price: " + parser.getHiPrice(), file=utf8stdout)
-      
+
       subtype_str = ""
       creature_stats_str = ""
       output_str = ENTRY.format(
@@ -159,5 +159,5 @@ finally:
   output.close()
   card_list.close()
   utf8stdout.close()
-  
+
 print(round(time.clock() - tb, 4))

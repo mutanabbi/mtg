@@ -18,7 +18,7 @@ class CardTextParser(object):
 class TypeLineParser(object):
     """
     Parser for typeline MTG cards' info based on 2013 Feb 01 rules edition
-    
+
     Note: It's service primitive to use into the other parsers, so it returns
     it'smembers by reference. Be careful to prevent changing dynamically created
     list-members outside the class

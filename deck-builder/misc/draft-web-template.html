@@ -36,7 +36,7 @@
       z-index: 1;
       bottom: 15%;
     }
-    
+
     table#my-table {
       width: 100%;
       cellpadding: 0px;
@@ -71,13 +71,13 @@
             "sPaginationType": "full_numbers",
             "aaSorting": [[ 1, "desc" ]]
         });
-    } ); 
+    } );
     </script>
 </head>
 
 <body>
-  
-  
+
+
   <div id="tabs">
     <ul>
     <li><a href="#tabs-1">Deck Statistics</a></li>
@@ -85,7 +85,7 @@
     <li><a href="#tabs-3">Possibilities</a></li>
     <li><a href="#tabs-4">Starting Hand</a></li>
     </ul>
-    
+
 
     <div id="tabs-1">
     <table id="my-table" class="display">
@@ -106,8 +106,8 @@
               <td>Creature - Elemental</td>
               <td>
               <i class="mana_1" title="1"></i>
-              <i class="mana_g" title="G"></i>              
-              <i class="mana_w" title="W"></i>              
+              <i class="mana_g" title="G"></i>
+              <i class="mana_w" title="W"></i>
               </td>
               <td>RTR</td>
               <td>0.1</td>
@@ -118,7 +118,7 @@
               <td>Enchantment</td>
               <td>
               <i class="mana_4" title="4"></i>
-              <i class="mana_r" title="R"></i>              
+              <i class="mana_r" title="R"></i>
               </td>
               <td>RTR</td>
               <td>0.5</td>
@@ -129,7 +129,7 @@
               <td>Creature - Human</td>
               <td>
               <i class="mana_2" title="2"></i>
-              <i class="mana_w" title="w"></i>              
+              <i class="mana_w" title="w"></i>
               </td>
               <td>RTR</td>
               <td>0.3</td>
@@ -150,7 +150,7 @@
               <td>Enchantment - Aura</td>
               <td>
               <i class="mana_1" title="1"></i>
-              <i class="mana_w" title="w"></i>  
+              <i class="mana_w" title="w"></i>
               </td>
               <td>ISD</td>
               <td>2.1</td>
@@ -180,8 +180,8 @@
       </tbody>
     </table>
     </div> <!-- div id=tabs-1 -->
-  
-  
+
+
     <div id="tabs-2">
       <div class="deck">
         <div class="card-cont">
@@ -224,8 +224,8 @@
         </div>
       </div>
     </div> <!-- div id=tabs-2 -->
-    
-  
+
+
     <div id="tabs-3">
       <span>
         These are the probabilities that you will have drawn the given card at least once by a certain turn!
@@ -247,16 +247,16 @@
       </table>
     </div> <!-- div id=tabs-3 -->
 
-    
+
     <div id="tabs-4">
       <div style="text-align: center;">
         <input type="button" onclick="generate_hand()" value="New Hand" />
         <input type="button" onclick="add_random_card()" value="Add Another Card" />
         <input type="button" onclick="mulligan()" value="Mulligan" />
       </div>
-    </div> <!-- div id=tabs-4 -->  
-  
-  
+    </div> <!-- div id=tabs-4 -->
+
+
   </div> <!-- div id=tabs -->
 
 
@@ -264,7 +264,7 @@
 </html>
 <script>
   var cnts = document.evaluate("//table[@id='my-table']/tbody/tr/td[position() = 1]", document, null, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null );
-  
+
   Array.prototype.getUnique = function(){
     return this.filter(function(item, ind, arr){
       return ind == 0 ? true : item !== arr[ind - 1];
@@ -274,13 +274,13 @@
   var arr = [];
   for (iter = cnts.iterateNext(); iter; iter = cnts.iterateNext())
     arr.push(parseInt(iter.textContent));
-    
+
   var sArr = arr.sort().getUnique();
-  
+
   var turnsCnt = 4;
   var total = 0;
   arr.forEach(function(val) { total += val; });
-  
+
   var res = {};
   for (var group = 0; group < sArr.length; ++group) {
     var gr = sArr[group];
@@ -313,7 +313,7 @@
     }
     result.appendChild(tr);
   }
-  
+
   var resIt = document.evaluate("//table[@id='possibility-table']/tbody", document, null, XPathResult.UNORDERED_NODE_ITERATOR_TYPE, null );
   resIt.iterateNext().appendChild(result);
 
