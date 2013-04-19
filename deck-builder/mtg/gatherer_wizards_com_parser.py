@@ -19,7 +19,15 @@ class GathererWizardsComParser(magic_parser.MagicParser):
 
 # private:
     def _findLabel(self, str):
-        return self._root.find('div', attrs={'class': 'label'}, text=re.compile(str))
+        # TODO: This is broken for bs 4.1.3-r1 (it worked before). Looks like a bug. Nodes with children don't pass
+        # any text to predicate (check test=lambda x: print(x) — it gonna return Null). Bugreport ;)?
+        #return self._root.find('div', attrs={'class': 'label'}, text=re.compile(str))
+        # Kind of workaround
+        pred = re.compile(str)
+        labels = [ x for x in self._root.findAll('div', attrs={'class': 'label'}) if pred.match(x.text.lstrip()) ]
+        if len(labels) != 1:
+            raise magic_parser.FormatError("{} entrances of `{}' label were found (1 expected)".format(len(labels), str))
+        return labels[0]
 
     def _findValueByLabel(self, node):
         return node.findNextSibling('div', attrs={'class': 'value'})
@@ -91,7 +99,7 @@ class GathererWizardsComParser(magic_parser.MagicParser):
         self._quote = result
 
     def _parseId(self):
-        self._id = self._findValueOf('Card #:')
+        self._id = self._findValueOf('Card Number:')
 
     def _parseRare(self):
         self._rare = self._findNodeOf('Rarity:').span.string.strip()
