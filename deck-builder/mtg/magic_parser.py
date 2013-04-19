@@ -4,16 +4,15 @@ from abc import ABCMeta, abstractmethod
 
 
 class Error(RuntimeError):
-    def __init__(ex, s):
-        super().__init__(s)
+    pass
 
 class FormatError(Error):
-    def __init__(ex, s = ""):
-        super().__init__("Unsuppoerted html stream format" + (": " + s) if s else "")
+    def __init__(ex, s=""):
+        super().__init__(("Unsuppoerted html stream format" + (": " + s) if s else "") + ": {}".format(ex))
 
 class InvalidStreamError(Exception):
-    def __init__(ex):
-        super().__init__("Invalid html stream")
+    def __init__(ex, s=""):
+        super().__init__("Invalid html stream: {}".format(ex))
 
 
 # todo: All other values (Phyrexia and so on)
