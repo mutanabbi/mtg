@@ -151,12 +151,15 @@ def main():
           result.append(output_str)
 
         except magic_parser.Error as ex:
-          print(2, "Invalid <card> item detected: {}".format(ex))
+          print("Invalid <card> item detected: {}".format(ex), file=sys.stderr)
           #except HTTPError as ex:
           #  if (ex.code == 404):
           #    print ("Invalid card identifier: " + card["set"] + "#" + card["id"])
           #  else:
           #    print ("Server is down: " + ex.code)
+
+    except KeyboardInterrupt:
+        print('Terminated by user request')
 
     finally:
       output.write(HEADER)
