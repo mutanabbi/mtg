@@ -1,15 +1,18 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from mtg.magiccards_info_parser import *
-from mtg.gatherer_wizards_com_parser import *
+
+# TODO This doesn't needed for installed package
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(__file__)))
+
+import mtg
 from connection_pool import ConnectionPool, LimitError
-from bs4 import BeautifulSoup
-from http.client import HTTPException
-import time
-from contextlib import ExitStack, closing
+import functools
 import concurrent.futures
-from functools import partial
+import bs4
+import http.client
+import time
 
 
 
@@ -73,17 +76,14 @@ def load_url(url, conn, timeout=60):
 
 
 
-if __name__ == "__main__":
+def main():
     tb = time.clock()
     WORKERS = 25
     CARDS_NO = 0                        # Just statistic
 
-    with ExitStack() as es:
-        card_list = es.enter_context(open("deck.xml", "r"))
-        output = es.enter_context(open("diff.html", "w", encoding='utf-8'))
-
+    with open("deck.xml", "r") as card_list, open("diff.html", "w", encoding='utf-8') as output:
         content = card_list.read()
-        soup = BeautifulSoup(content)
+        soup = bs4.BeautifulSoup(content)
         result = []
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=WORKERS) as executor:
@@ -110,7 +110,7 @@ if __name__ == "__main__":
             ]) as connection_pool:
 
                 def process_card(key):
-                    io_queue_pool[0].append(partial(init_stage, key))
+                    io_queue_pool[0].append(functools.partial(init_stage, key))
 
 
                 def send_request(key, url, st):
@@ -150,14 +150,14 @@ if __name__ == "__main__":
                         round(res_t - req_t, 4)
                     ))
 
-                    prs = MagiccardsInfoParser(data)
+                    prs = mtg.MagiccardsInfoParser(data)
                     assert(meta[STAGE] == None)
                     meta[STAGE] = prs
                     queue = io_queue_pool[STAGE]
 
-                    io_queue_pool[1].append(partial(send_request, key, prs.getGoth(), 1))
+                    io_queue_pool[1].append(functools.partial(send_request, key, prs.getGoth(), 1))
 
-                    io_queue_pool[2].append(partial(send_request, key, prs.getPriceSrc(), 2))
+                    io_queue_pool[2].append(functools.partial(send_request, key, prs.getPriceSrc(), 2))
                 # end do_stage_0()
 
 
@@ -176,7 +176,7 @@ if __name__ == "__main__":
                         round(res_t - req_t, 4)
                     ))
 
-                    prs = GathererWizardsComParser(data)
+                    prs = mtg.GathererWizardsComParser(data)
                     assert(meta[STAGE] == None)
                     meta[STAGE] = prs
                     if stage[1] and stage[2]:
@@ -197,7 +197,7 @@ if __name__ == "__main__":
                         id,
                         round(res_t - req_t, 4)
                     ))
-                    prs = TCGParser(data)
+                    prs = mtg.TCGParser(data)
                     assert(meta[STAGE] == None)
                     meta[STAGE] = prs
                     if stage[1] and stage[2]:
@@ -223,22 +223,22 @@ if __name__ == "__main__":
                             x(prs) if prs else 'ERROR'
                             for x in
                             (
-                                magic_parser.MagicParser.getName
-                            , magic_parser.MagicParser.getTypeStr
-                            , magic_parser.MagicParser.getCardType
-                            , magic_parser.MagicParser.getPower
-                            , magic_parser.MagicParser.getToughness
-                            , magic_parser.MagicParser.getSubtypes
-                            , magic_parser.MagicParser.getSupertypes
-                            , magic_parser.MagicParser.getId
-                            , magic_parser.MagicParser.getRare
-                            , magic_parser.MagicParser.getArt
-                            , magic_parser.MagicParser.getSet
-                            , magic_parser.MagicParser.getColors
-                            , magic_parser.MagicParser.getDesc
-                            , magic_parser.MagicParser.getQuote
-                            , magic_parser.MagicParser.getMana
-                            , magic_parser.MagicParser.getCMC
+                                mtg.MagicParser.getName
+                              , mtg.MagicParser.getTypeStr
+                              , mtg.MagicParser.getCardType
+                              , mtg.MagicParser.getPower
+                              , mtg.MagicParser.getToughness
+                              , mtg.MagicParser.getSubtypes
+                              , mtg.MagicParser.getSupertypes
+                              , mtg.MagicParser.getId
+                              , mtg.MagicParser.getRare
+                              , mtg.MagicParser.getArt
+                              , mtg.MagicParser.getSet
+                              , mtg.MagicParser.getColors
+                              , mtg.MagicParser.getDesc
+                              , mtg.MagicParser.getQuote
+                              , mtg.MagicParser.getMana
+                              , mtg.MagicParser.getCMC
                             )
                         )
 
@@ -285,6 +285,7 @@ if __name__ == "__main__":
                             #)
                             assert("Init request was sent" and not stage[0] == None)
 
+                            # TODO: whould be great to have a state machine here. Is there some framework?
                             if "magiccards.info" in url:
                                 do_stage_0(key, future)
                             elif "gatherer.wizards.com" in url:
@@ -296,9 +297,9 @@ if __name__ == "__main__":
 
                             break
                         assert('Looks like an empty cycle' and is_come_job_did)
-                    except HTTPException as ex:
+                    except http.client.HTTPException as ex:
                         print('HTTP Error. Ommit task')
-                    except magic_parser.Error as ex:
+                    except mtg.magic_parser.Error as ex:
                         print('HTML Error. Ommit rest of chain')
                     except LimitError:
                         print('Connection pool limit was reached. Task is going to process later')
@@ -309,6 +310,12 @@ if __name__ == "__main__":
             # end widh ConnetionPool
         # end wich executor
         output.write(__BODY.format('\n'.join([str(x) for x in result])))
-    # end with ExitStack
+    # end with card_list, output
     print("{} cards for {} sec".format(CARDS_NO, round(time.clock() - tb, 2)))
-# end if __main__
+# end main()
+
+
+
+if __name__ == "__main__":
+    main()
+    sys.exit(0)
