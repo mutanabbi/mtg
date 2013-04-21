@@ -8,7 +8,7 @@ class Error(RuntimeError):
 
 class FormatError(Error):
     def __init__(ex, s=""):
-        super().__init__(("Unsuppoerted html stream format" + (": " + s) if s else "") + ": {}".format(ex))
+        super().__init__(("Unsupported html stream format" + (": " + s) if s else "") + ": {}".format(ex))
 
 class InvalidStreamError(Exception):
     def __init__(ex, s=""):
