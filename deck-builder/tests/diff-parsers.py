@@ -8,10 +8,10 @@ sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 import mtg
 from connection_pool import ConnectionPool, LimitError
-import functools
-import concurrent.futures
 import bs4
 import http.client
+import functools
+import concurrent.futures
 import time
 
 
