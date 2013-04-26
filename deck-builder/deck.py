@@ -1,18 +1,14 @@
 # -*- coding: utf-8 -*-
 
-import sys
-
-# TODO This doesn't needed for installed package
-#sys.path.append(os.path.dirname())
-
 import mtg
 import bs4
 import urllib.request
-import re
 import codecs
+import re
 import time
 if __debug__:
     import traceback
+import sys
 
 
 HEADER = "<deck>\n"
@@ -46,9 +42,9 @@ ENTRY = '''
 
 def main():
     tb = time.clock()
-    # fd 1 is stdout
     # Escaping looks crappy but I have to use it, because Python suppose any
     # "with" line without ":" symbol at the end wrong
+    # fd 1 is stdout
     with open(1, 'w', encoding='utf8', closefd=False) as utf8stdout \
       , open("deck.xml", "r") as card_list \
       , open("deck-processed.xml", "w", encoding='utf-8') as output \
