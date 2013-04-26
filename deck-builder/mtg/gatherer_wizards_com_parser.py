@@ -12,10 +12,10 @@ class GathererWizardsComParser(magic_parser.MagicParser):
         try:
             self._root = self._cs.html.body.find('table', attrs={'class': 'cardDetails'})
         except AttributeError as ex:
-            raise magic_parser.InvalidStreamError() from ex
+            raise magic_parser.InvalidStreamError("gatherer.wizards.com parser can't find expected <body> tag") from ex
 
         if not self._root:
-            raise magic_parser.FormatError()
+            raise magic_parser.FormatError("gatherer.wizard.com parser can't find root node")
 
 # private:
     def _findLabel(self, str):

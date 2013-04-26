@@ -11,6 +11,9 @@ import urllib.request
 import re
 import codecs
 import time
+if __debug__:
+    import traceback
+
 
 HEADER = "<deck>\n"
 FOOTER = "\n</deck>"
@@ -59,6 +62,8 @@ def main():
                 try:
                     cnt = 1 if not card.has_key("cnt") else int(card["cnt"])
                     addr = "http://magiccards.info/{0}/en/{1}.html".format(card["set"], card["id"])
+                    print("")
+                    print(addr)
                     f = urllib.request.urlopen(addr)
                     html = f.read()
                     parser = mtg.MagiccardsInfoParser(html)
@@ -81,8 +86,6 @@ def main():
                     #  </keywords>"""
 
                     # Just DEBUG
-                    print("")
-                    print(addr)
                     print("Name: " + parser.getName(), file=utf8stdout)
                     print("TypeStr: " + parser.getTypeStr(), file=utf8stdout)
                     print("CardType: " + str(parser.getCardType()), file=utf8stdout)
@@ -151,8 +154,14 @@ def main():
                     print(output_str, file=utf8stdout)
                     result.append(output_str)
 
+                # TODO: Some times FormatError could mean that is transforming card and we just have to
+                # add 'a' or 'b' suffix to card id and resend request. In most cases it happens if we
+                # didn't find root node. So may be it makes sense to create additional exception type
+                # for this case
                 except mtg.magic_parser.Error as ex:
-                    print("Invalid <card> item detected: {}".format(ex), file=sys.stderr)
+                    print("Invalid <card> item detected: {}{}".format(ex, (': ' + str(ex.__cause__) if ex.__cause__ else '')), file=sys.stderr)
+                    if __debug__:
+                        traceback.print_tb(ex.__traceback__, file=sys.stderr)
                     #except HTTPError as ex:
                     #  if (ex.code == 404):
                     #    print ("Invalid card identifier: " + card["set"] + "#" + card["id"])

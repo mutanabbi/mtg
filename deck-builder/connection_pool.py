@@ -4,7 +4,7 @@ from http.client import HTTPConnection
 
 class LimitError(RuntimeError):
     def __init__(self, str = ''):
-        super().__init__(self, 'Limit reached' + (': ' + str) if str else '')
+        super().__init__(self, 'Limit reached' + (': ' + str if str else ''))
 
 
 class Connection(object):

@@ -4,15 +4,18 @@ from abc import ABCMeta, abstractmethod
 
 
 class Error(RuntimeError):
-    pass
+    '''Base class for all parser exceptions'''
+
 
 class FormatError(Error):
-    def __init__(ex, s=""):
-        super().__init__(("Unsupported html stream format" + (": " + s) if s else "") + ": {}".format(ex))
+    def __init__(self, s=''):
+        super().__init__('Unsupported html stream format' + (': ' + s if s else ''))
+
 
 class InvalidStreamError(Exception):
-    def __init__(ex, s=""):
-        super().__init__("Invalid html stream: {}".format(ex))
+    def __init__(self, s=''):
+        super().__init__('Invalid html stream:' + (': ' + s if s else '' + ': {}'))
+
 
 
 # todo: All other values (Phyrexia and so on)
@@ -34,6 +37,7 @@ class MagicParser(metaclass=ABCMeta): # Abstract base class
         return [f for f in result if f != None]
 
     def _exprotect(f):
+        '''Simple decorator to transform "means page format error" errors to right exception class'''
         def result(self):
             try:
                 return f(self)

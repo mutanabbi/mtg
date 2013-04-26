@@ -10,9 +10,9 @@ class MagiccardsInfoParser(magic_parser.MagicParser):
         try:
             self._root = self._cs.html.body.findAll('table')[3].tr
         except AttributeError as ex:
-            raise magic_parser.InvalidStreamError() from ex
+            raise magic_parser.InvalidStreamError("magiccards.info parser didn't find expected tag") from ex
         except LookupError as ex:
-            raise magic_parser.FormatError() from ex
+            raise magic_parser.FormatError("magiccards.info parser didn't find expected <table> tag") from ex
         assert(self._root)
 
 # Class-specific implementation
@@ -128,7 +128,7 @@ class TCGParser(object):
     def __init__(self, stream):
         m = re.search(r".(\$[0-9.]+).*(\$[0-9.]+).*(\$[0-9.]+)", str(stream))
         if not (m and len(m.groups()) == 3):
-            raise magic_parser.FormatError()
+            raise magic_parser.FormatError("tcg parser can't find prices' pattern")
         self._lo_price, self._mi_price, self._hi_price = m.groups()
 
     def getHiPrice(self):
