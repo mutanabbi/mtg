@@ -5,7 +5,7 @@
   >
 
 <xsl:template match="card">
-  <xsl:param name="local:card-booster"/>
+  <xsl:param name="local:set"/>
   <xsl:param name="local:is-active-player" />
   <xsl:variable name="local:class">
     <xsl:choose>
@@ -23,7 +23,7 @@
     Сейчас я разрулил это с помощью onerror, но по-хорошему хотелось бы карты перевертыши смотреть
     с обоих сторон. Надо обмозговать, как это реализовать.
     -->
-    <img width="100" height="143" class="dv_show_card" alt="Тут будет имя {./@id}" src="http://magiccards.info/scans/en/{$local:card-booster}/{./@id}.jpg" onerror="this.src='http://magiccards.info/scans/en/{$local:card-booster}/{./@id}a.jpg';"/>
+    <img width="100" height="143" class="dv_show_card" alt="Тут будет имя {./@id}" src="http://magiccards.info/scans/en/{$local:set}/{./@id}.jpg" onerror="this.onerror=null;this.src='http://magiccards.info/scans/en/{$local:set}/{./@id}a.jpg';"/>
   </div>
 </xsl:template>
 
@@ -110,10 +110,12 @@
         <!-- Формируем контейнеры для каждого круга (для всех пиков в рамках одного бустера). В норме N кругов = N игроков (по бустеру на игрока) -->
         <xsl:for-each select="/game/boosters/booster">
             <xsl:variable name="local:booster" select="./@id" />
+            <xsl:variable name="local:set" select="./@set" />
             <xsl:variable name="local:booster-pos" select="position()" />
+            <xsl:variable name="local:circle" select="/game/draft/deck[@player=$local:cur-player]/circle[@booster=$local:booster]" />
             <div class="dv_image_pack{position()}">
 
-              <xsl:for-each select="/game/draft/deck[@player=$local:cur-player]/circle[@booster=$local:booster]/card">
+              <xsl:for-each select="$local:circle/card">
                 <xsl:variable name="local:pick-pos" select="position()" />
 
                 <!-- Нижележащий DIV необходимо сгенерировать для каждого пика в игре -->
@@ -129,7 +131,18 @@
                   <xsl:for-each select="/game/players/player">
                     <xsl:variable name="local:player" select="./@id" />
                     <xsl:variable name="local:player-pos" select="position()" />
-                    <xsl:variable name="local:orientation" select="1 - 2 * (($local:booster-pos - 1) mod 2)" />
+                    <!--
+                    Определяемся с направлением драфта
+                    1: По часовой стрелке; -1: против часовой стрелки
+                    по дефолтку, первый круг: по часовой стрелке; второй: против; третий: снова по часовой
+                    иногда случаются организационные ошибки, так что этот дефолтный порядок можно переопределить,
+                    используя атрибут motion ('cw': по часовой стрелке; 'acw': против часовой стрелки)
+                    -->
+                    <xsl:variable name="local:orientation" select="($local:circle[@motion] = 'cw') + ($local:circle[@motion] = 'acw') + (not(local:circle[@motion]) * (1 - 2 * (($local:booster-pos - 1) mod 2)))" />
+
+                    <xsl:if test="not($local:orientation) or not($local:orientation = 1 or $local:orientation = -1)">
+                      <xsl:message terminate="yes">Can't detect draft motion</xsl:message>
+                    </xsl:if>
                     <!--
                     <div style="clear: both">
                       <xsl:value-of select="$local:player-pos" />
@@ -140,7 +153,7 @@
                     </div>
                     -->
                     <xsl:apply-templates select="/game/draft/deck[@player=$local:player]/circle[@booster=$local:booster]/card[((position() - 1 + $local:orientation * (($local:cur-player-pos - 1) - ($local:player-pos - 1))  - ($local:pick-pos - 1)) mod $local:num = 0) and (position() >= $local:pick-pos)]" >
-                      <xsl:with-param name="local:card-booster" select="$local:booster"/>
+                      <xsl:with-param name="local:set" select="$local:set"/>
                       <xsl:with-param name="local:is-active-player" select="$local:player-pos = $local:cur-player-pos"/>
                     </xsl:apply-templates>
 

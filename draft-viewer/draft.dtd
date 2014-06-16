@@ -1,4 +1,5 @@
  <!ENTITY % set-list "(gtc|rtr|avr|dka|isd|nph|mbs|som|roe|wwk|zen|arb|cfx|ala|eve|shm|mt|lw|fut|pc|ts|tsts|cs|di|gp|rav|m13|m12|m11|m10|10e|9e|sok|bok|chk|5dn|ds|mi)">
+ <!ENTITY % motion "(cw|acw)">
  <!ELEMENT game (date?, players, boosters, draft)>
     <!ELEMENT date (#PCDATA)>
     <!ELEMENT players (player+)>
@@ -11,12 +12,15 @@
     <!ELEMENT boosters (booster+)>
         <!ELEMENT booster (#PCDATA)>
             <!ATTLIST booster
-                id %set-list; #REQUIRED>
+                id ID #REQUIRED>
+            <!ATTLIST booster
+                set %set-list; #REQUIRED>
 
     <!ELEMENT draft (deck+)>
         <!ELEMENT deck (circle+)>
             <!ATTLIST deck player IDREF #REQUIRED>
             <!ELEMENT circle (card+)>
-                <!ATTLIST circle booster %set-list; #REQUIRED>
+                <!ATTLIST circle booster IDREF #REQUIRED>
+                <!ATTLIST circle motion %motion; #IMPLIED>
                 <!ELEMENT card EMPTY>
                     <!ATTLIST card id CDATA #REQUIRED>
